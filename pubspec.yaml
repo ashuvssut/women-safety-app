@@ -15,7 +15,7 @@ dependencies:
   firebase_auth:
   google_sign_in:
   shared_preferences:
-  firebase_core: ^0.5.3
+  firebase_core: ^0.5.2+1
 
   cupertino_icons: ^1.0.0
 
