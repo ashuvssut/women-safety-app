@@ -81,3 +81,4 @@ ios/.generated/
 packages
 pubspec.lock
 .flutter-plugins
+dump/someHowTos.md
