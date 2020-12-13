@@ -33,9 +33,9 @@ class _SignInState extends State<SignIn> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 50.0),
-              width: 250,
+              width: 300,
               child: ButtonTheme(
-                buttonColor: Colors.white70,
+                buttonColor: Colors.white60,
                 child: RaisedButton(
                   onPressed: () {
                     AuthMethods().signInWithGoogle(context);
@@ -45,7 +45,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   child: Row(children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(top:7, right:17,bottom:7,left:7),
                       child: SvgPicture.asset(
                         "assets/icons/google.svg",
                         height: size.height * 0.05,
@@ -53,7 +53,11 @@ class _SignInState extends State<SignIn> {
                     ),
                     Text(
                       "Sign In with Google",
-                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 21,
+                      ),
                     ),
                   ]),
                 ),
