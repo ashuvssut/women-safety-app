@@ -5,7 +5,9 @@ import 'package:women_safety_app/views/signin.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  
   await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
