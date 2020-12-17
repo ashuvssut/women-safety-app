@@ -16,8 +16,7 @@ dependencies:
   google_sign_in:
   shared_preferences:
   firebase_core: ^0.5.2+1
-  flutter_local_notifications:
-  hardware_buttons:
+  awesome_notifications:
 
   cupertino_icons: ^1.0.0
   flutter_svg: ^0.19.1

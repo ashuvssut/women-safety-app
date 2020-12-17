@@ -6,6 +6,7 @@ import 'package:women_safety_app/views/articles.dart';
 import 'package:women_safety_app/views/settings.dart';
 import 'package:women_safety_app/views/signin.dart';
 import 'package:women_safety_app/views/video_library.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -123,7 +124,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             Text(
-                              "Laws Realted to Women",
+                              "Women Safety Laws",
                               textAlign: TextAlign.center,
                             ),
                           ],
