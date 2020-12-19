@@ -10,22 +10,31 @@ void main() async {
   await Firebase.initializeApp();
 
   await AwesomeNotifications().initialize(
-      // set the icon to null if you want to use the default app icon
-      'resource://drawable/res_app_icon',
-      [
-        NotificationChannel(
-          channelKey: 'basic_channel',
-          channelName: 'Basic notifications',
-          channelDescription: 'Notification channel for basic tests',
-          defaultColor: Color(0xFF9D50DD),
-          ledColor: Colors.white,
-        )
-      ]);
+    // set the icon to null if you want to use the default app icon
+    'resource://drawable/ic_stat_onesignal_default',
+    [
+      NotificationChannel(
+        icon: 'resource://drawable/ic_stat_onesignal_default',
+        channelKey: 'progress_bar',
+        channelName: 'Progress bar notifications',
+        channelDescription: 'Notifications with a progress bar layout',
+        defaultColor: Colors.deepPurple,
+        ledColor: Colors.deepPurple,
+        vibrationPattern: lowVibrationPattern,
+        onlyAlertOnce: true,
+      ),
+    ],
+  );
 
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

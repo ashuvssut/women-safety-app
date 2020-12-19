@@ -1,7 +1,10 @@
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/auth.dart';
+import 'package:women_safety_app/utils/notification_util.dart';
 import 'package:women_safety_app/views/articles.dart';
 import 'package:women_safety_app/views/settings.dart';
 import 'package:women_safety_app/views/signin.dart';
@@ -15,15 +18,117 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String userName, userEmail, imageURL;
+  bool notificationsAllowed = false;
   @override
   void initState() {
+    super.initState();
+
+    // Prepare elements for drawer widget
     SharedPreferenceHelper.getUserNameKey()
         .then((value) => setState(() => {userName = value}));
     SharedPreferenceHelper.getUserEmail()
         .then((value) => setState(() => {userEmail = value}));
     SharedPreferenceHelper.getUserProfilePicKey()
         .then((value) => setState(() => {imageURL = value}));
-    super.initState();
+
+    /*********************************** */
+    // Notification interaction listeners
+    /*********************************** */
+    AwesomeNotifications().createdStream.listen((receivedNotification) {
+      // String createdSourceText = AssertUtils.toSimpleEnumString(receivedNotification.createdSource);
+      debugPrint('created: '+ receivedNotification.payload.values.toString());
+      // Fluttertoast.showToast(msg: '$createdSourceText notification created');
+    });
+
+    AwesomeNotifications().displayedStream.listen((receivedNotification) {
+      // String createdSourceText = AssertUtils.toSimpleEnumString(receivedNotification.createdSource);
+      debugPrint('displayed: '+ receivedNotification.payload.values.toString());
+      // Fluttertoast.showToast(msg: '$createdSourceText notification displayed');
+    });
+
+    // AwesomeNotifications().dismissedStream.listen((receivedNotification) {
+    //   String dismissedSourceText = AssertUtils.toSimpleEnumString(receivedNotification.dismissedLifeCycle);
+    //   Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
+    // });
+
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      processActionReceived(receivedNotification);
+    });
+
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      setState(() {
+        notificationsAllowed = isAllowed;
+      });
+
+      if (!isAllowed) {
+        requestUserPermission(isAllowed);
+      }else{
+        debugPrint('Notifications are allowed bro');
+      }
+    });
+  }
+
+  void requestUserPermission(bool isAllowed) async {
+    showDialog(
+      context: context,
+      builder: (_) => NetworkGiffyDialog(
+        buttonOkText: Text(
+          'Allow',
+          style: TextStyle(color: Colors.white),
+        ),
+        buttonCancelText: Text(
+          'Later',
+          style: TextStyle(color: Colors.white),
+        ),
+        buttonCancelColor: Colors.grey,
+        buttonOkColor: Colors.deepPurple,
+        buttonRadius: 0.0,
+        image:
+            Image.asset("assets/images/animated-bell.gif", fit: BoxFit.cover),
+        title: Text(
+          'Get Notified!',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+        ),
+        description: Text(
+          'Allow Awesome Notifications to send you beautiful notifications!',
+          textAlign: TextAlign.center,
+        ),
+        entryAnimation: EntryAnimation.DEFAULT,
+        onCancelButtonPressed: () async {
+          Navigator.of(context).pop();
+          notificationsAllowed =
+              await AwesomeNotifications().isNotificationAllowed();
+          setState(
+            () {
+              notificationsAllowed = notificationsAllowed;
+            },
+          );
+        },
+        onOkButtonPressed: () async {
+          Navigator.of(context).pop();
+          await AwesomeNotifications().requestPermissionToSendNotifications();
+          notificationsAllowed =
+              await AwesomeNotifications().isNotificationAllowed();
+          setState(
+            () {
+              notificationsAllowed = notificationsAllowed;
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  void processActionReceived(ReceivedAction receivedNotification) {
+    Fluttertoast.showToast(msg: 'Action received bro');
+    debugPrint('actions: '+ receivedNotification.payload.values.toString());
+
+    if(receivedNotification.payload.values.toString()=='(true)'){
+      showProgressNotification(1337);
+    }else{
+      simulatedStep = maxStep + 1;
+    }
   }
 
   @override
@@ -85,7 +190,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
             height: 300,
@@ -173,104 +278,108 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          Expanded(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
-                  bottomLeft: Radius.zero,
-                  bottomRight: Radius.zero,
-                ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40.0),
+                topRight: Radius.circular(40.0),
+                bottomLeft: Radius.zero,
+                bottomRight: Radius.zero,
               ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Send Emergency",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 21,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "SOS",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 28,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    child: SvgPicture.asset(
+                      "assets/icons/alert.svg",
+                      height: size.height * 0.1,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => showProgressNotification(1337),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.all(30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(45.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 18.0, right: 60, left: 60),
+                  child: ElevatedButton(
+                    child: Row(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 35.0, top: 8, bottom: 8, right: 8),
+                          child: SvgPicture.asset(
+                            "assets/icons/add_alert.svg",
+                            height: size.height * 0.05,
+                            color: Colors.white,
+                          ),
+                        ),
                         Text(
-                          "Send Emergency",
+                          "Add Contacts",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
                             fontSize: 21,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "SOS",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 28,
-                            ),
-                          ),
-                        )
                       ],
                     ),
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      child: SvgPicture.asset(
-                        "assets/icons/alert.svg",
-                        height: size.height * 0.1,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => print("it's pressed"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        onPrimary: Colors.white,
-                        padding: EdgeInsets.all(30),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45.0),
-                        ),
+                    onPressed: () => cancelNotification(1337),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.all(4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 18.0, right: 60, left: 60),
-                    child: ElevatedButton(
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 35.0, top: 8, bottom: 8, right: 8),
-                            child: SvgPicture.asset(
-                              "assets/icons/add_alert.svg",
-                              height: size.height * 0.05,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            "Add Contacts",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 21,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () => print("it's pressed"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        onPrimary: Colors.white,
-                        padding: EdgeInsets.all(4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Colors.blue,
             ),
           ),
         ],
