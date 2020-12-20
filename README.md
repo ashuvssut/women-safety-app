@@ -1,13 +1,15 @@
 # women_safety_app
 
+## Development in Progress...
+
 An app dedicated towards woman safety. Keeping in view about the increasing cases of women security threats.
 
-# Project Explaination
+## Project Explaination
 
 we have created an app which includes the following <br>
 1. Homepage<br>
     - has navigations to other two pages.<br>
-    - has our main SOS feature (sending call alert to added contacts with giving location sms)<br>
+    - has our main SOS feature (sending location sms to added trusted contacts)<br>
 
 2   - youtube video fetching page ( fetches self defence and safety awareness videos using YouTube Data API v3)<br>
 

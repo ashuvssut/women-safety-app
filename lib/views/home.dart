@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/auth.dart';
@@ -36,14 +37,18 @@ class _HomeState extends State<Home> {
     /*********************************** */
     AwesomeNotifications().createdStream.listen((receivedNotification) {
       // String createdSourceText = AssertUtils.toSimpleEnumString(receivedNotification.createdSource);
-      debugPrint('created: '+ receivedNotification.payload.values.toString());
       // Fluttertoast.showToast(msg: '$createdSourceText notification created');
+      log('created: '+ receivedNotification.payload.values.toString());
     });
 
     AwesomeNotifications().displayedStream.listen((receivedNotification) {
       // String createdSourceText = AssertUtils.toSimpleEnumString(receivedNotification.createdSource);
-      debugPrint('displayed: '+ receivedNotification.payload.values.toString());
       // Fluttertoast.showToast(msg: '$createdSourceText notification displayed');
+      log('displayed: '+ receivedNotification.payload.values.toString());
+    });
+
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      processActionReceived(receivedNotification);
     });
 
     // AwesomeNotifications().dismissedStream.listen((receivedNotification) {
@@ -51,10 +56,7 @@ class _HomeState extends State<Home> {
     //   Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
     // });
 
-    AwesomeNotifications().actionStream.listen((receivedNotification) {
-      processActionReceived(receivedNotification);
-    });
-
+    // Ensure Notifications are Allowed
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       setState(() {
         notificationsAllowed = isAllowed;
@@ -63,7 +65,7 @@ class _HomeState extends State<Home> {
       if (!isAllowed) {
         requestUserPermission(isAllowed);
       }else{
-        debugPrint('Notifications are allowed bro');
+        log('Notifications are allowed bro');
       }
     });
   }
@@ -121,13 +123,13 @@ class _HomeState extends State<Home> {
   }
 
   void processActionReceived(ReceivedAction receivedNotification) {
-    Fluttertoast.showToast(msg: 'Action received bro');
-    debugPrint('actions: '+ receivedNotification.payload.values.toString());
+    // Fluttertoast.showToast(msg: 'Action received bro');
+    log('actions: '+ receivedNotification.payload.values.toString());
 
-    if(receivedNotification.payload.values.toString()=='(true)'){
+    if(receivedNotification.payload.values.toString()=='(true)'){ //PRESSED SEND SOS
       showProgressNotification(1337);
-    }else{
-      simulatedStep = maxStep + 1;
+    }else{  //PRESSED CANCEL
+      cancelProgressNotification();
     }
   }
 
@@ -362,7 +364,7 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    onPressed: () => cancelNotification(1337),
+                    onPressed: () => removeNotification(1337),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
                       onPrimary: Colors.white,

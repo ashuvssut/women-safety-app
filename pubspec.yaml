@@ -21,7 +21,12 @@ dependencies:
   giffy_dialog: 
   cupertino_icons: ^1.0.0
   flutter_svg: ^0.19.1
-
+  
+  sqflite:
+  flutter_sms:
+  geolocator:
+  permission_handler:
+  contacts_service:
 
 dev_dependencies:
   flutter_test:
