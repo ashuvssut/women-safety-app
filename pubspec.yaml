@@ -28,6 +28,8 @@ dependencies:
   permission_handler:
   contacts_service:
 
+  flutter_background_service:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

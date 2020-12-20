@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/auth.dart';
-import 'package:women_safety_app/utils/notification_util.dart';
+import 'package:women_safety_app/services/notification_util.dart';
 import 'package:women_safety_app/views/articles.dart';
 import 'package:women_safety_app/views/settings.dart';
 import 'package:women_safety_app/views/signin.dart';

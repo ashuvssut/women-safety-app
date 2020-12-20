@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:women_safety_app/utils/SOS_util.dart';
+import 'package:women_safety_app/services/SOS_util.dart';
 
 int maxStep = 10;
 int simulatedStep;
