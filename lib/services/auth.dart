@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/views/home.dart';
@@ -15,7 +18,7 @@ class AuthMethods {
 
   // sign in with google
   Future<User> signInWithGoogle(BuildContext context) async {
-    print("Trying to Login with Google");
+    log("Trying to Login with Google");
 
     final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
@@ -35,7 +38,7 @@ class AuthMethods {
       User userDetails = result.user;
 
       if (result == null) {
-        print("Error:no user found");
+        log("Error:no user found");
       } else {
         //save user info and then send to Home screen
         SharedPreferenceHelper.saveUserLoggedInStatus(true);
@@ -50,7 +53,8 @@ class AuthMethods {
 
       return userDetails;
     } catch (e) {
-      print(e);
+      log(e.toString());
+      Fluttertoast.showToast(msg: "Network Error! Can't Sign you in.");
       return null;
     }
   }
@@ -61,7 +65,7 @@ class AuthMethods {
       SharedPreferenceHelper.clearData();
       return await _auth.signOut();
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 }
