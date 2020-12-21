@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/auth.dart';
-import 'package:women_safety_app/services/notification_util.dart';
+import 'package:women_safety_app/services/notification_methods.dart';
+import 'package:women_safety_app/services/notification_stream_listeners.dart';
 import 'package:women_safety_app/views/articles.dart';
 import 'package:women_safety_app/views/settings.dart';
 import 'package:women_safety_app/views/signin.dart';
@@ -25,36 +26,15 @@ class _HomeState extends State<Home> {
     super.initState();
 
     // Prepare elements for drawer widget
-    SharedPreferenceHelper.getUserNameKey()
-        .then((value) => setState(() => {userName = value}));
-    SharedPreferenceHelper.getUserEmail()
-        .then((value) => setState(() => {userEmail = value}));
-    SharedPreferenceHelper.getUserProfilePicKey()
-        .then((value) => setState(() => {imageURL = value}));
-
-    /*********************************** */
-    // Notification interaction listeners
-    /*********************************** */
-    AwesomeNotifications().createdStream.listen((receivedNotification) {
-      // String createdSourceText = AssertUtils.toSimpleEnumString(receivedNotification.createdSource);
-      // Fluttertoast.showToast(msg: '$createdSourceText notification created');
-      log('created: '+ receivedNotification.payload.values.toString());
-    });
-
-    AwesomeNotifications().displayedStream.listen((receivedNotification) {
-      // String createdSourceText = AssertUtils.toSimpleEnumString(receivedNotification.createdSource);
-      // Fluttertoast.showToast(msg: '$createdSourceText notification displayed');
-      log('displayed: '+ receivedNotification.payload.values.toString());
-    });
-
-    AwesomeNotifications().actionStream.listen((receivedNotification) {
-      processActionReceived(receivedNotification);
-    });
-
-    // AwesomeNotifications().dismissedStream.listen((receivedNotification) {
-    //   String dismissedSourceText = AssertUtils.toSimpleEnumString(receivedNotification.dismissedLifeCycle);
-    //   Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
-    // });
+    SharedPreferenceHelper.getUserNameKey().then((value) => setState(() => {
+          userName = value
+        }));
+    SharedPreferenceHelper.getUserEmail().then((value) => setState(() => {
+          userEmail = value
+        }));
+    SharedPreferenceHelper.getUserProfilePicKey().then((value) => setState(() => {
+          imageURL = value
+        }));
 
     // Ensure Notifications are Allowed
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
@@ -64,10 +44,15 @@ class _HomeState extends State<Home> {
 
       if (!isAllowed) {
         requestUserPermission(isAllowed);
-      }else{
+      } else {
         log('Notifications are allowed bro');
       }
     });
+
+    NotificationMethods.createNullProgressNotification(1337);
+    ListenToNotificationStream.createdStream();
+    ListenToNotificationStream.displayedStream();
+    ListenToNotificationStream.actionStream();
   }
 
   void requestUserPermission(bool isAllowed) async {
@@ -85,8 +70,7 @@ class _HomeState extends State<Home> {
         buttonCancelColor: Colors.grey,
         buttonOkColor: Colors.deepPurple,
         buttonRadius: 0.0,
-        image:
-            Image.asset("assets/images/animated-bell.gif", fit: BoxFit.cover),
+        image: Image.asset("assets/images/animated-bell.gif", fit: BoxFit.cover),
         title: Text(
           'Get Notified!',
           textAlign: TextAlign.center,
@@ -99,8 +83,7 @@ class _HomeState extends State<Home> {
         entryAnimation: EntryAnimation.DEFAULT,
         onCancelButtonPressed: () async {
           Navigator.of(context).pop();
-          notificationsAllowed =
-              await AwesomeNotifications().isNotificationAllowed();
+          notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
           setState(
             () {
               notificationsAllowed = notificationsAllowed;
@@ -110,8 +93,7 @@ class _HomeState extends State<Home> {
         onOkButtonPressed: () async {
           Navigator.of(context).pop();
           await AwesomeNotifications().requestPermissionToSendNotifications();
-          notificationsAllowed =
-              await AwesomeNotifications().isNotificationAllowed();
+          notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
           setState(
             () {
               notificationsAllowed = notificationsAllowed;
@@ -120,17 +102,6 @@ class _HomeState extends State<Home> {
         },
       ),
     );
-  }
-
-  void processActionReceived(ReceivedAction receivedNotification) {
-    // Fluttertoast.showToast(msg: 'Action received bro');
-    log('actions: '+ receivedNotification.payload.values.toString());
-
-    if(receivedNotification.payload.values.toString()=='(true)'){ //PRESSED SEND SOS
-      showProgressNotification(1337);
-    }else{  //PRESSED CANCEL
-      cancelProgressNotification();
-    }
   }
 
   @override
@@ -153,10 +124,7 @@ class _HomeState extends State<Home> {
             new UserAccountsDrawerHeader(
               accountName: new Text(userName == null ? "" : userName),
               accountEmail: new Text(userEmail == null ? "" : userEmail),
-              currentAccountPicture: new CircleAvatar(
-                  backgroundImage: new NetworkImage(imageURL == null
-                      ? "assets/icons/account.svg"
-                      : imageURL)),
+              currentAccountPicture: new CircleAvatar(backgroundImage: new NetworkImage(imageURL == null ? "assets/icons/account.svg" : imageURL)),
             ),
             new ListTile(
               title: Text("Settings"),
@@ -328,7 +296,7 @@ class _HomeState extends State<Home> {
                       height: size.height * 0.1,
                       color: Colors.white,
                     ),
-                    onPressed: () => showProgressNotification(1337),
+                    onPressed: () => NotificationMethods.showProgressNotification(1337),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
                       onPrimary: Colors.white,
@@ -340,14 +308,12 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 18.0, right: 60, left: 60),
+                  padding: const EdgeInsets.only(top: 18.0, right: 60, left: 60),
                   child: ElevatedButton(
                     child: Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 35.0, top: 8, bottom: 8, right: 8),
+                          padding: const EdgeInsets.only(left: 35.0, top: 8, bottom: 8, right: 8),
                           child: SvgPicture.asset(
                             "assets/icons/add_alert.svg",
                             height: size.height * 0.05,
@@ -364,7 +330,7 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    onPressed: () => removeNotification(1337),
+                    onPressed: () => NotificationMethods.removeNotification(1337),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
                       onPrimary: Colors.white,
