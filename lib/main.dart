@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:women_safety_app/views/add_contact.dart';
 import 'package:women_safety_app/views/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:women_safety_app/views/signin.dart';
@@ -22,6 +23,7 @@ void main() async {
         ledColor: Colors.deepPurple,
         vibrationPattern: lowVibrationPattern,
         onlyAlertOnce: true,
+        importance: NotificationImportance.Max,
       ),
     ],
   );
@@ -43,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: AddContacts(),
     );
   }
 }

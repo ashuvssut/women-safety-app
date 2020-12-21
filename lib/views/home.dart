@@ -8,6 +8,7 @@ import 'package:women_safety_app/services/auth.dart';
 import 'package:women_safety_app/services/notification_methods.dart';
 import 'package:women_safety_app/services/notification_stream_listeners.dart';
 import 'package:women_safety_app/views/articles.dart';
+import 'package:women_safety_app/views/add_contact.dart';
 import 'package:women_safety_app/views/settings.dart';
 import 'package:women_safety_app/views/signin.dart';
 import 'package:women_safety_app/views/video_library.dart';
@@ -330,7 +331,12 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    onPressed: () => NotificationMethods.removeNotification(1337),
+                    onPressed: () => () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddContacts()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
                       onPrimary: Colors.white,
