@@ -12,7 +12,6 @@ class AddContacts extends StatefulWidget {
 class _AddContactsState extends State<AddContacts> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Contacts> contactList;
-  int count = 0;
 
   @override
   Widget build(BuildContext context) {

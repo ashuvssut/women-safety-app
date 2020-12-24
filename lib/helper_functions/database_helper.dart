@@ -2,17 +2,21 @@ import 'package:sqflite/sqflite.dart';
 import 'package:women_safety_app/services/contacts.dart';
 
 class DatabaseHelper {
-  static DatabaseHelper _databaseHelper;
-  static Database _database;
 
   String contactTable = 'contact_table';
   String colId = 'id';
   String colContactName = 'name';
   String colContactNumber = 'number';
 
-  //named constructor
+  // named private constructor..(used to create an instance of a singleton class)
+  // it will be used to create an instance of the DatabaseHelper class
   DatabaseHelper._createInstance();
 
+  //Now lets create an instance of the database
+  static DatabaseHelper _databaseHelper;  // this _databaseHelper will 
+  //be referenced using 'this' keyword. It helps to access getters and 
+  //setters of the class. for example: _database getter is used when we 
+  //want to initialize the db.
   factory DatabaseHelper() {
     //factory keyword allows the constructor to return some value
     if (_databaseHelper == null) {
@@ -23,11 +27,12 @@ class DatabaseHelper {
     return _databaseHelper;
   }
 
+  // lets initialize the database
+  static Database _database;
   Future<Database> get database async {
     if (_database == null) {
       _database = await initializeDatabase();
     }
-
     return _database;
   }
 
@@ -35,11 +40,11 @@ class DatabaseHelper {
     String directoryPath = await getDatabasesPath();
     String dbLocation = directoryPath + 'contact.db';
 
-    var contactDatabase = await openDatabase(dbLocation, version: 1, onCreate: _createDb);
+    var contactDatabase = await openDatabase(dbLocation, version: 1, onCreate: _createDbTable);
     return contactDatabase;
   }
 
-  void _createDb(Database db, int newVersion) async {
+  void _createDbTable(Database db, int newVersion) async {
     await db.execute('CREATE TABLE $contactTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colContactName TEXT, $colContactNumber TEXT)');
   }
 
