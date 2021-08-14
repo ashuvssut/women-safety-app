@@ -14,6 +14,11 @@ class _AddContactsState extends State<AddContacts> {
   List<Contacts> contactList;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (contactList == null) {
       contactList = List<Contacts>();
@@ -48,17 +53,15 @@ class _AddContactsState extends State<AddContacts> {
               minWidth: double.infinity,
               child: RaisedButton.icon(
                 onPressed: () {
-                  log('Button Clicked.');
+                  log('Insert Clicked.');
+                  setState(() {
+                    contactList.add(new Contacts('+918114727882', "ashuvssut"));
+                  });
                 },
                 elevation: 10,
                 highlightElevation: 15,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
                 label: Text(
                   'Add a Trusted Contact',
@@ -70,21 +73,44 @@ class _AddContactsState extends State<AddContacts> {
                   size: 35,
                 ),
                 textColor: Colors.white,
-                splashColor: Colors.red,
                 color: Colors.green,
               ),
             ),
             Expanded(
               child: ListView(
-                // scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
                 padding: const EdgeInsets.all(20.0),
-                // children: _getContactsListing(),
+                children: _getContactsListing(),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> _getContactsListing() {
+    List listings = new List<Widget>();
+    for (int i = 0; i < contactList.length; i++) {
+      listings.add(new ListTile(
+        key:Key(contactList[i].id.toString()),
+        title: new Text(contactList[i].name),
+        subtitle: new Text(contactList[i].number),
+        onTap: () {},
+        trailing: IconButton(
+          icon: Icon(Icons.delete_outline),
+          color: Colors.red,
+          tooltip: 'Delete Contact',
+          onPressed: () {
+            setState(() {
+                databaseHelper.deleteContact(contactList[i].id);
+                log(contactList[i].id.toString());
+              }
+            );
+          },
+        ),
+        ),
+      );
+    }
+    return listings;
   }
 }
