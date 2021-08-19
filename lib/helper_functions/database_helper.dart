@@ -2,7 +2,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:women_safety_app/services/contacts.dart';
 
 class DatabaseHelper {
-
   String contactTable = 'contact_table';
   String colId = 'id';
   String colContactName = 'name';
@@ -13,9 +12,9 @@ class DatabaseHelper {
   DatabaseHelper._createInstance();
 
   //Now lets create an instance of the database
-  static DatabaseHelper _databaseHelper;  // this _databaseHelper will 
-  //be referenced using 'this' keyword. It helps to access getters and 
-  //setters of the class. for example: _database getter is used when we 
+  static DatabaseHelper _databaseHelper; // this _databaseHelper will
+  //be referenced using 'this' keyword. It helps to access getters and
+  //setters of the class. for example: _database getter is used when we
   //want to initialize the db.
   factory DatabaseHelper() {
     //factory keyword allows the constructor to return some value
@@ -59,31 +58,47 @@ class DatabaseHelper {
   }
 
   //Insert a contact object
-  Future<int> insertContact(Contacts contact) async{
+  Future<int> insertContact(TContact contact) async {
     Database db = await this.database;
     var result = await db.insert(contactTable, contact.toMap());
+    // print(await db.query(contactTable));
     return result;
   }
 
   //update a contact object
-  Future<int> updateContact(Contacts contact) async{
-    Database db = await this.database;
-    var result = await db.update(contactTable, contact.toMap(), where:'$colId = ?',whereArgs: [contact.id]);
-    return result;
-  }
+  // Future<int> updateContact(Contact contact) async{
+  //   Database db = await this.database;
+  //   var result = await db.update(contactTable, contact.toMap(), where:'$colId = ?',whereArgs: [contact.id]);
+  //   return result;
+  // }
 
   //delete a contact object
-  Future<int> deleteContact(int id) async{
+  Future<int> deleteContact(int id) async {
     Database db = await this.database;
     int result = await db.rawDelete('DELETE FROM $contactTable WHERE $colId = $id');
+    // print(await db.query(contactTable));
     return result;
   }
 
   //get number of contact objects
-  Future<int> getCount(int id) async{
+  Future<int> getCount(int id) async {
     Database db = await this.database;
     List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $contactTable');
     int result = Sqflite.firstIntValue(x);
     return result;
+  }
+
+  // Get the 'Map List' [ List<Map> ] and convert it to 'Contact List' [ List<Contact> ]
+  Future<List<TContact>> getContactList() async {
+    var contactMapList = await getContactMapList(); // Get 'Map List' from database
+    int count = contactMapList.length; // Count the number of map entries in db table
+
+    List<TContact> contactList = List<TContact>();
+    // For loop to create a 'Contact List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      contactList.add(TContact.fromMapObject(contactMapList[i]));
+    }
+
+    return contactList;
   }
 }

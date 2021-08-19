@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:women_safety_app/helper_functions/database_helper.dart';
 import 'package:women_safety_app/services/contacts.dart';
 
@@ -11,7 +13,8 @@ class AddContacts extends StatefulWidget {
 
 class _AddContactsState extends State<AddContacts> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Contacts> contactList;
+  List<TContact> contactList;
+  int count = 0;
 
   @override
   void initState() {
@@ -21,7 +24,7 @@ class _AddContactsState extends State<AddContacts> {
   @override
   Widget build(BuildContext context) {
     if (contactList == null) {
-      contactList = List<Contacts>();
+      contactList = List<TContact>();
     }
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -53,10 +56,7 @@ class _AddContactsState extends State<AddContacts> {
               minWidth: double.infinity,
               child: RaisedButton.icon(
                 onPressed: () {
-                  log('Insert Clicked.');
-                  setState(() {
-                    contactList.add(new Contacts('+918114727882', "ashuvssut"));
-                  });
+                  _addContact();
                 },
                 elevation: 10,
                 highlightElevation: 15,
@@ -77,10 +77,8 @@ class _AddContactsState extends State<AddContacts> {
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(20.0),
-                children: _getContactsListing(),
-              ),
+              child: getContactListView(),
+              // padding: const EdgeInsets.all(20.0),
             ),
           ],
         ),
@@ -88,29 +86,70 @@ class _AddContactsState extends State<AddContacts> {
     );
   }
 
-  List<Widget> _getContactsListing() {
-    List listings = new List<Widget>();
-    for (int i = 0; i < contactList.length; i++) {
-      listings.add(new ListTile(
-        key:Key(contactList[i].id.toString()),
-        title: new Text(contactList[i].name),
-        subtitle: new Text(contactList[i].number),
-        onTap: () {},
-        trailing: IconButton(
-          icon: Icon(Icons.delete_outline),
-          color: Colors.red,
-          tooltip: 'Delete Contact',
-          onPressed: () {
-            setState(() {
-                databaseHelper.deleteContact(contactList[i].id);
-                log(contactList[i].id.toString());
-              }
-            );
-          },
-        ),
-        ),
-      );
+  ListView getContactListView() {
+    TextStyle titleStyle = Theme.of(context).textTheme.subtitle1;
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: count,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child: ListTile(
+            title: Text(
+              this.contactList[position].name,
+              style: titleStyle,
+            ),
+            subtitle: Text(this.contactList[position].number),
+            trailing: IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                ),
+                tooltip: 'Delete Contact',
+                onPressed: () {
+                  _deleteContact(context, contactList[position]);
+                }),
+            onTap: () {
+              // log("ListTile Tapped");
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _addContact() async {
+    log('Insert Clicked.');
+    TContact newContact = TContact('+918114727882', "ashuvssut");
+    int result = await databaseHelper.insertContact(newContact);
+    if (result != 0) {
+      log('Contact added Successfully');
+      updateListView();
+    } else {
+      log('add Contact Failed');
+      Fluttertoast.showToast(msg: "Failed to Add Contact");
     }
-    return listings;
+  }
+
+  void _deleteContact(BuildContext context, TContact contact) async {
+    int result = await databaseHelper.deleteContact(contact.id);
+    if (result != 0) {
+      log('Contact Removed Successfully');
+      updateListView();
+    }
+  }
+
+  void updateListView() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<TContact>> contactListFuture = databaseHelper.getContactList();
+      contactListFuture.then((contactList) {
+        setState(() {
+          this.contactList = contactList;
+          this.count = contactList.length;
+        });
+      });
+    });
   }
 }

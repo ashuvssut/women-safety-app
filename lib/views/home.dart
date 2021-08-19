@@ -153,7 +153,8 @@ class _HomeState extends State<Home> {
               trailing: FittedBox(
                 child: SvgPicture.asset(
                   "assets/icons/log-out.svg",
-                  height: size.height * 0.04,
+                  // height: size.height * 0.04,
+                  height: 50,
                 ),
               ),
             ),
