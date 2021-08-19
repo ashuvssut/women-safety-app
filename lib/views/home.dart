@@ -121,11 +121,12 @@ class _HomeState extends State<Home> {
       ),
       drawer: new Drawer(
         child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             new UserAccountsDrawerHeader(
               accountName: new Text(userName == null ? "" : userName),
               accountEmail: new Text(userEmail == null ? "" : userEmail),
-              currentAccountPicture: new CircleAvatar(backgroundImage: new NetworkImage(imageURL == null ? "assets/icons/account.svg" : imageURL)),
+              currentAccountPicture: imageURL == null ? Icon(Icons.account_circle_rounded, size: 55) : new CircleAvatar(backgroundImage: NetworkImage(imageURL)),
             ),
             new ListTile(
               title: Text("Settings"),
@@ -150,12 +151,9 @@ class _HomeState extends State<Home> {
                   new MaterialPageRoute(builder: (context) => SignIn()),
                 );
               },
-              trailing: FittedBox(
-                child: SvgPicture.asset(
-                  "assets/icons/log-out.svg",
-                  // height: size.height * 0.04,
-                  height: 50,
-                ),
+              trailing: SvgPicture.asset(
+                "assets/icons/log-out.svg",
+                height: 40,
               ),
             ),
           ],
