@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:women_safety_app/helper_functions/database_helper.dart';
 import 'package:women_safety_app/services/contacts.dart';
+import 'package:women_safety_app/views/select_contact.dart';
 
 class AddContacts extends StatefulWidget {
   @override
@@ -56,7 +56,7 @@ class _AddContactsState extends State<AddContacts> {
               minWidth: double.infinity,
               child: RaisedButton.icon(
                 onPressed: () {
-                  _addContact();
+                  navigateToSelectContact();
                 },
                 elevation: 10,
                 highlightElevation: 15,
@@ -119,16 +119,13 @@ class _AddContactsState extends State<AddContacts> {
     );
   }
 
-  void _addContact() async {
-    log('Insert Clicked.');
-    TContact newContact = TContact('+918114727882', "ashuvssut");
-    int result = await databaseHelper.insertContact(newContact);
-    if (result != 0) {
-      log('Contact added Successfully');
+  void navigateToSelectContact() async {
+    bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SelectContact();
+    }));
+
+    if (result == true) {
       updateListView();
-    } else {
-      log('add Contact Failed');
-      Fluttertoast.showToast(msg: "Failed to Add Contact");
     }
   }
 
