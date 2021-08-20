@@ -1,13 +1,23 @@
 import 'dart:math' hide log;
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/SOS_util.dart';
 
 class NotificationMethods {
-  static int maxStep = 10;
+  static int maxStep;
   static int simulatedStep;
 
   static Future<void> showProgressNotification(int id) async {
+    int sosDelayTime = await SharedPreferenceHelper.getSOSdelayTime();
+    if (sosDelayTime != null) {
+      print('delay time is $sosDelayTime');
+      maxStep = sosDelayTime;
+    } else {
+      maxStep = 10;
+      await SharedPreferenceHelper.saveSOSdelayTime(10);
+    }
+
     for (simulatedStep = 1; simulatedStep <= maxStep + 1; simulatedStep++) {
       await Future.delayed(
         Duration(seconds: 1),
@@ -77,7 +87,6 @@ class NotificationMethods {
                 )
               ],
             );
-
           } else {
             await AwesomeNotifications().createNotification(
               content: NotificationContent(

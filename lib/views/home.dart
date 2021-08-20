@@ -57,6 +57,38 @@ class _HomeState extends State<Home> {
     ListenToNotificationStream.createdStream();
     ListenToNotificationStream.displayedStream();
     ListenToNotificationStream.actionStream();
+
+    // Update SOS Shared Prefs
+    SharedPreferenceHelper.getMessageHead().then((value) async {
+      if (value != null) {
+        print('MessageHead is $value');
+      } else {
+        print('MessageHead is $value');
+        value = "I'm in trouble, plz help me. Reach this location:";
+        SharedPreferenceHelper.saveMessageHead(value);
+      }
+    });
+
+    SharedPreferenceHelper.getSOSdelayTime().then((value) async {
+      if (value != null) {
+        print('SOSdelayTime is $value');
+      } else {
+        print('SOSdelayTime is $value');
+        value = 10;
+        SharedPreferenceHelper.saveSOSdelayTime(value);
+      }
+    });
+
+    SharedPreferenceHelper.getSOSrepeatInterval().then((value) async {
+      if (value != null) {
+        print('SOS repeat interval is $value');
+      } else {
+        print('SOS repeat interval is $value');
+        value = 120;
+        SharedPreferenceHelper.saveSOSrepeatInterval(value);
+      }
+    });
+  
   }
 
   void requestUserPermission(bool isAllowed) async {

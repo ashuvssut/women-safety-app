@@ -10,8 +10,20 @@ class _ArticlesState extends State<Articles> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("With You - Women Safety App"),
+        centerTitle: true,
+        title: Text(
+          "Women Safety Laws",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
+      ),
+      body: Container(
+        child: Text(
+          "This Settings Page is under development",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
+  
   }
 }

@@ -5,12 +5,10 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:telephony/telephony.dart';
 import 'package:women_safety_app/helper_functions/database_helper.dart';
+import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/contacts.dart';
 
 class SOSMethods {
-  static String messageHead = "I'm in trouble, plz help me. Reach this location:";
-  static String messageBody = '';
-
   static sendSOS() async {
     log('SOS Triggered');
 
@@ -20,7 +18,9 @@ class SOSMethods {
       final latitude = positionDetials.position.latitude;
       final longitude = positionDetials.position.longitude;
       String address = positionDetials.address;
-      messageBody = "https://www.google.com/maps/search/?api=1&query=$latitude%2C$longitude. $address";
+
+      String messageHead = await SharedPreferenceHelper.getMessageHead();
+      String messageBody = "https://www.google.com/maps/search/?api=1&query=$latitude%2C$longitude. $address";
 
       final message = messageHead + messageBody;
       await _initiateSendSMS(message);
@@ -65,12 +65,22 @@ class SOSMethods {
       Position currentPosition = position;
       String currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
 
-      Object positionDetails = PositionDetails(currentPosition, currentAddress);
+      PositionDetails positionDetails = PositionDetails(currentPosition, currentAddress);
       return positionDetails;
     } catch (e) {
       print(e);
-      Fluttertoast.showToast(msg: 'Error occured while fetching location!');
-      return null;
+
+      if (position.latitude != null) {
+        // if only geocoding has failed
+        Fluttertoast.showToast(msg: 'Oops! Apps could not fetch Address.');
+
+        PositionDetails positionDetails = PositionDetails(position, "");
+        return positionDetails;
+      } else {
+        Fluttertoast.showToast(msg: 'Sorry! Geolocation could not be fetched. SOS Failed.');
+        //if both geolocator and geocoding failed
+        return null;
+      }
     }
   }
 
