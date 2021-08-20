@@ -15,7 +15,7 @@ class NotificationMethods {
       maxStep = sosDelayTime;
     } else {
       maxStep = 10;
-      await SharedPreferenceHelper.saveSOSdelayTime(10);
+      await SharedPreferenceHelper.saveSOSdelayTime(maxStep);
     }
 
     for (simulatedStep = 1; simulatedStep <= maxStep + 1; simulatedStep++) {
