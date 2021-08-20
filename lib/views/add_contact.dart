@@ -19,8 +19,12 @@ class _AddContactsState extends State<AddContacts> {
   @override
   void initState() {
     super.initState();
-  }
 
+    WidgetsBinding.instance.addPostFrameCallback((_) { //useEffect()
+      updateListView();
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     if (contactList == null) {

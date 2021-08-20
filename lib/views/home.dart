@@ -330,7 +330,7 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    onPressed: () => () {
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => AddContacts()),

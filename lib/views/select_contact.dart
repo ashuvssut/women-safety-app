@@ -114,8 +114,13 @@ class _SelectContactState extends State<SelectContact> {
           children: <Widget>[
             Container(
               child: TextField(
+                autofocus: true,
                 controller: searchController,
-                decoration: InputDecoration(labelText: 'Search', border: new OutlineInputBorder(borderSide: new BorderSide(color: Theme.of(context).primaryColor)), prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor)),
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  border: new OutlineInputBorder(borderSide: new BorderSide(color: Theme.of(context).primaryColor)),
+                  prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
+                ),
               ),
             ),
             listItemsExist == true
@@ -172,7 +177,10 @@ class _SelectContactState extends State<SelectContact> {
                   )
                 : Container(
                     padding: EdgeInsets.all(20),
-                    child: Text(isSearching ? 'No search results to show' : 'No contacts exist', style: Theme.of(context).textTheme.headline6),
+                    child: Text(
+                      isSearching ? 'No search results to show' : 'No contacts exist',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   )
           ],
         ),
