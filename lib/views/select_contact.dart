@@ -60,9 +60,13 @@ class _SelectContactState extends State<SelectContact> {
         colorIndex = 0;
       }
     });
-    setState(() {
-      contacts = _contacts;
-    });
+    if (!mounted) {
+      return;
+    } else {
+      setState(() {
+        contacts = _contacts;
+      });
+    }
   }
 
   filterContacts() {
@@ -107,6 +111,9 @@ class _SelectContactState extends State<SelectContact> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -178,7 +185,7 @@ class _SelectContactState extends State<SelectContact> {
                 : Container(
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      isSearching ? 'No search results to show' : 'No contacts exist',
+                      isSearching ? 'No search results to show' : 'No contacts found yet',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   )

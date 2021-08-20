@@ -264,7 +264,7 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 5),
                   child: Column(
                     children: [
                       Text(
@@ -276,7 +276,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 0),
                         child: Text(
                           "SOS",
                           style: TextStyle(
@@ -308,7 +308,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 18.0, right: 60, left: 60),
+                  padding: const EdgeInsets.only(top: 40.0, right: 60, left: 60),
                   child: ElevatedButton(
                     child: Row(
                       children: [

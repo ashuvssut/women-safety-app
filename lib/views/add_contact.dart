@@ -20,11 +20,12 @@ class _AddContactsState extends State<AddContacts> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) { //useEffect()
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //useEffect()
       updateListView();
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     if (contactList == null) {
@@ -39,6 +40,9 @@ class _AddContactsState extends State<AddContacts> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
       ),
       body: Container(
         width: double.infinity,
