@@ -83,8 +83,7 @@ pubspec.lock
 .flutter-plugins
 
 # other
-dump/someHowTos.md
+dump
 lib/pages/notification_details_page.dart
 lib/pages/notification_examples_page.dart
-dump/TODO.md
-dump/dump.dart
+

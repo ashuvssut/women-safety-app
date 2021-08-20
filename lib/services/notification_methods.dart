@@ -4,7 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:women_safety_app/services/SOS_util.dart';
 
 class NotificationMethods {
-  static int maxStep = 3;
+  static int maxStep = 10;
   static int simulatedStep;
 
   static Future<void> showProgressNotification(int id) async {
@@ -149,7 +149,7 @@ class NotificationMethods {
   }
 
   static void cancelProgressNotification() {
-    simulatedStep = maxStep + 2;
+    simulatedStep = maxStep + 2; //hits loop break statement in showProgressNotification()
   }
 
   static Future<void> removeNotification(int id) async {
