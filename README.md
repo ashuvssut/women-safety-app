@@ -10,15 +10,15 @@ An app dedicated towards woman safety. Keeping in view about the increasing case
 
 - Contributions via PRs are appreaciated
 
-## Project Explaination
+## Project Explanation
 
-we have created an app which includes the following <br>
-1. Homepage<br>
-- has navigations to other two pages.<br>
-- has our main SOS feature (sending location sms to added trusted contacts)<br>
+We have created an app which includes the following
+1. Homepage
+   - has navigations to other two pages.
+   - has our main SOS feature (sending location sms to added trusted contacts)
 
-2.  Youtube video fetching page ( fetches self defence and safety awareness videos using YouTube Data API v3)<br>
+2. Youtube video fetching page ( fetches self defence and safety awareness videos using YouTube Data API v3)
 
-3.  Make screen/s showing all about IPC 1860 for women. It would e like an awareness documentation like stuff.<br>
+3. Make screen/s showing all about IPC 1860 for women. It would e like an awareness documentation like stuff.
 
 
