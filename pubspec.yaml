@@ -23,8 +23,9 @@ dependencies:
   flutter_svg: ^0.19.1
   
   sqflite:
-  flutter_sms:
+  telephony:
   geolocator:
+  geocoding:
   permission_handler:
   contacts_service:
 

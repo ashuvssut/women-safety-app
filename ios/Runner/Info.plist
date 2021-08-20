@@ -4,6 +4,8 @@
 <dict>
 	<key>NSContactsUsageDescription</key>  
 	<string>This app requires contacts access to function properly.</string>  
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>  
+	<string>This app requires location access to send your location to your added trusted contacts when SOS is triggered.</string>  
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
