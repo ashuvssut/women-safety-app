@@ -4,7 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:women_safety_app/services/SOS_util.dart';
 
 class NotificationMethods {
-  static int maxStep = 10;
+  static int maxStep = 3;
   static int simulatedStep;
 
   static Future<void> showProgressNotification(int id) async {

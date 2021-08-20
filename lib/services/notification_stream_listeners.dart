@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,20 +7,20 @@ import 'package:women_safety_app/services/notification_methods.dart';
 class ListenToNotificationStream {
   static void createdStream() {
     AwesomeNotifications().createdStream.listen((receivedNotification) {
-      log('created. finished: ' + receivedNotification.payload.values.toString());
+      // log('created. finished: ' + receivedNotification.payload.values.toString());
     });
   }
 
   static void displayedStream() {
     AwesomeNotifications().displayedStream.listen((receivedNotification) {
-      log('displayed: finished: ' + receivedNotification.payload.values.toString());
+      // log('displayed: finished: ' + receivedNotification.payload.values.toString());
     });
   }
 
   static void actionStream() {
     AwesomeNotifications().actionStream.listen((receivedNotification) {
-      log('actions. finished: ' + receivedNotification.payload.values.toString());
-      log('actions. finished: ' + receivedNotification.buttonKeyPressed.toString());
+      // log('actions. finished: ' + receivedNotification.payload.values.toString());
+      // log('actions. finished: ' + receivedNotification.buttonKeyPressed.toString());
 
       if (receivedNotification.buttonKeyPressed == 'START') {
         //PRESSED SEND SOS

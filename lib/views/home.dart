@@ -1,8 +1,10 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:women_safety_app/helper_functions/database_helper.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/auth.dart';
 import 'package:women_safety_app/services/notification_methods.dart';
@@ -20,6 +22,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
   String userName, userEmail, imageURL;
   bool notificationsAllowed = false;
   @override
@@ -46,7 +49,7 @@ class _HomeState extends State<Home> {
       if (!isAllowed) {
         requestUserPermission(isAllowed);
       } else {
-        log('Notifications are allowed bro');
+        // log('Notifications are allowed');
       }
     });
 
@@ -296,7 +299,9 @@ class _HomeState extends State<Home> {
                       height: size.height * 0.1,
                       color: Colors.white,
                     ),
-                    onPressed: () => NotificationMethods.showProgressNotification(1337),
+                    onPressed: () {
+                      _triggerSendSOS();
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
                       onPrimary: Colors.white,
@@ -358,5 +363,16 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  void _triggerSendSOS() async {
+    int count = await databaseHelper.getCount();
+
+    if (count == 0) {
+      Fluttertoast.showToast(msg: 'Please Add Trusted contacts to send SOS.');
+    } else {
+      Fluttertoast.showToast(msg: 'Sending SOS...');
+      NotificationMethods.showProgressNotification(1337);
+    }
   }
 }
