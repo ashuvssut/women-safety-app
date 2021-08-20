@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="women_safety_app"
+        android:label="With You - Women Safety App"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
