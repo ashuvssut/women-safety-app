@@ -143,7 +143,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: <Widget>[
                 _buildMessageHead(),
                 _buildSOSdelayTime(),
-                _buildSOStimeInterval(),
+                // _buildSOStimeInterval(),
                 SizedBox(height: 100),
                 RaisedButton(
                   child: Text(
