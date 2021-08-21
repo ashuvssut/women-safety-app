@@ -6,9 +6,9 @@ Currently this app is compatible with Android only.
 
 ## Development in Progress...
 
-- Release v0.1 is usable. Articles page and Video Library pages are not implemented. 
+- Release v0.1-alpha is all ready to use (SOS featue works fine). Articles page and Video Library pages are not implemented. 
 
-- Release v0.2 will bring on improvements and those pending pages. (see Projects tab) 
+- Release v0.2-alpha will bring on improvements and add those pending pages. (see Projects tab) 
 
 - Contributions via PRs are appreaciated
 
