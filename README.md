@@ -1,4 +1,4 @@
-# With you - Women safety app
+# With you - Women safety app (checkout the alpha release and report issues you find!)
 
 An app dedicated towards woman safety. Keeping in view about the increasing cases of women security threats.
 
