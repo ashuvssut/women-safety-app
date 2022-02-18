@@ -1,8 +1,7 @@
 # With you - Women safety app 
 ### checkout the alpha release and report issues you find!
 
-An app dedicated towards woman safety. Keeping in view about the increasing cases of women security threats.
-Cancel changes
+An app dedicated towards woman safety. Keeping in view about the increasing cases of threats on women.
 Currently this app is compatible with Android only.
 
 ## Development in Progress...
