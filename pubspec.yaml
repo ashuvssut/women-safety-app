@@ -1,5 +1,6 @@
 name: women_safety_app
-description: An App that can send current location of the user to her trusted list of contacts when in danger with just one tap via SMS.
+description: An App that can send current location of the user to her trusted
+  list of contacts when in danger with just one tap via SMS.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
@@ -21,26 +22,24 @@ environment:
 # To automatically upgrade your package dependencies to the latest versions consider running `flutter pub upgrade --major-versions`.
 # To see which dependencies have newer versions available, run `flutter pub outdated`.
 dependencies:
+  awesome_notifications: ^0.7.4+1
+  contacts_service: ^0.6.3
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^4.2.9
+  firebase_core: ^2.7.0
   flutter:
     sdk: flutter
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  firebase_core: ^2.7.0
-  awesome_notifications: ^0.7.4+1
-  firebase_auth: ^4.2.9
-  shared_preferences: ^2.0.18
-  fluttertoast: ^8.2.1
-  google_sign_in: ^6.0.1
   flutter_svg: ^2.0.2
-  permission_handler: ^10.2.0
-  sqflite: ^2.2.5
+  fluttertoast: ^8.2.1
   geocoding: ^2.0.5
-  telephony: ^0.2.0
   geolocator: ^9.0.2
+  google_sign_in: ^6.0.1
+  permission_handler: ^10.2.0
+  shared_preferences: ^2.0.18
+  sqflite: ^2.2.5
+  telephony: ^0.2.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -48,10 +47,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
@@ -60,13 +60,10 @@ flutter:
     - assets/images/
     - assets/icons/
     # - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
