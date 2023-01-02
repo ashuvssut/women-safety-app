@@ -2,18 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:women_safety_app/helper_functions/database_helper.dart';
+import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/services/contacts.dart';
 import 'package:women_safety_app/views/select_contact.dart';
 
 class AddContacts extends StatefulWidget {
+  const AddContacts({super.key});
+
   @override
-  _AddContactsState createState() => _AddContactsState();
+  State<AddContacts> createState() => _AddContactsState();
 }
 
 class _AddContactsState extends State<AddContacts> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
-  List<TContact> contactList;
+  DatabaseMethods databaseHelper = DatabaseMethods();
+  List<TContact> contactList = [];
   int count = 0;
 
   @override
@@ -28,26 +30,23 @@ class _AddContactsState extends State<AddContacts> {
 
   @override
   Widget build(BuildContext context) {
-    if (contactList == null) {
-      contactList = [];
-    }
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Trusted Contacts",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black, //change your color here
         ),
       ),
       body: Container(
         width: double.infinity,
-        margin: EdgeInsets.only(top: 30, right: 20, left: 20, bottom: 0),
-        decoration: BoxDecoration(
+        margin: const EdgeInsets.only(top: 30, right: 20, left: 20, bottom: 0),
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -73,17 +72,17 @@ class _AddContactsState extends State<AddContacts> {
                 onPressed: () {
                   navigateToSelectContact();
                 },
-                label: Text(
+                label: const Text(
                   'Add a Trusted Contact',
                   style: TextStyle(fontSize: 25),
                 ),
-                icon: Icon(
+                icon: const Icon(
                   Icons.contacts,
                   color: Colors.white,
                   size: 35,
                 ),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -92,7 +91,7 @@ class _AddContactsState extends State<AddContacts> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(
@@ -106,7 +105,7 @@ class _AddContactsState extends State<AddContacts> {
   }
 
   ListView getContactListView() {
-    TextStyle titleStyle = Theme.of(context).textTheme.titleMedium;
+    TextStyle? titleStyle = Theme.of(context).textTheme.titleMedium;
     return ListView.builder(
       shrinkWrap: true,
       itemCount: count,
@@ -116,12 +115,12 @@ class _AddContactsState extends State<AddContacts> {
           elevation: 2.0,
           child: ListTile(
             title: Text(
-              this.contactList[position].name,
+              contactList[position].getName,
               style: titleStyle,
             ),
-            subtitle: Text(this.contactList[position].number),
+            subtitle: Text(contactList[position].getNumber),
             trailing: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete_outline,
                   color: Colors.red,
                 ),
@@ -140,7 +139,7 @@ class _AddContactsState extends State<AddContacts> {
 
   void navigateToSelectContact() async {
     bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return SelectContact();
+      return const SelectContact();
     }));
 
     if (result == true) {
@@ -163,7 +162,7 @@ class _AddContactsState extends State<AddContacts> {
       contactListFuture.then((contactList) {
         setState(() {
           this.contactList = contactList;
-          this.count = contactList.length;
+          count = contactList.length;
         });
       });
     });
