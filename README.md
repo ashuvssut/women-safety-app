@@ -11,20 +11,31 @@ Currently this app is compatible with Android only.
 
 #### Sign in screen
 
-<img src="./docs/assets/0.1.jpg" width="200"/>
-<img src="./docs/assets/0.2.jpg" width="200"/>
+<table>
+  <tr>
+    <td><img src="./docs/assets/0.1.jpg" width="200"/></td>
+    <td><img src="./docs/assets/0.2.jpg" width="200"/></td>
+  </tr>
+</table>
 
 #### Home screen
 <img src="./docs/assets/1.jpg" width="200"/>
 
 #### Trusted contacts screen
-<img src="./docs/assets/2.jpg" width="200"/>
-<img src="./docs/assets/3.jpg" width="200"/>
+<table>
+  <tr>
+    <td><img src="./docs/assets/2.jpg" width="200"/></td>
+    <td><img src="./docs/assets/3.jpg" width="200"/></td>
+  </tr>
+</table>
 
 #### Drawer & Settings screen
-<img src="./docs/assets/4.jpg" width="200"/>
-<img src="./docs/assets/5.jpg" width="200"/>
-
+<table>
+  <tr>
+    <td><img src="./docs/assets/4.jpg" width="200"/></td>
+    <td><img src="./docs/assets/5.jpg" width="200"/></td>
+  </tr>
+</table>
 
 
 
