@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ElevatedButton(
                   child: Text(
                     'Save Changes',
-                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   onPressed: () {
                     if (!_formKey.currentState.validate()) {

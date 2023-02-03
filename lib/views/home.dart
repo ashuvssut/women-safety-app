@@ -172,7 +172,7 @@ class _HomeState extends State<Home> {
                 );
               },
               trailing: FittedBox(
-                child: Icon(Icons.settings, size: 35),
+                child: Icon(Icons.settings, size: 25),
               ),
             ),
             new ListTile(
@@ -187,7 +187,7 @@ class _HomeState extends State<Home> {
               },
               trailing: SvgPicture.asset(
                 "assets/icons/log-out.svg",
-                height: 40,
+                height: 25,
               ),
             ),
           ],
@@ -224,11 +224,12 @@ class _HomeState extends State<Home> {
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.30,
-                        height: 150,
+                        margin: EdgeInsetsDirectional.symmetric(vertical: 20),
+                        // height: 150,
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: SvgPicture.asset(
                                 "assets/icons/law.svg",
                                 height: size.height * 0.1,
@@ -263,11 +264,11 @@ class _HomeState extends State<Home> {
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.30,
-                        height: 150,
+                        margin: EdgeInsetsDirectional.symmetric(vertical: 20),
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(5),
                               child: SvgPicture.asset(
                                 "assets/icons/self.svg",
                                 height: size.height * 0.1,
@@ -302,7 +303,7 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 5),
+                  padding: const EdgeInsets.fromLTRB(16, 36, 16, 5),
                   child: Column(
                     children: [
                       Text(
@@ -338,7 +339,7 @@ class _HomeState extends State<Home> {
                       _triggerSendSOS();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: Color.fromARGB(255, 255, 110, 99),
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.all(30),
                       shape: RoundedRectangleBorder(
@@ -356,7 +357,7 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(left: 35.0, top: 8, bottom: 8, right: 8),
                           child: SvgPicture.asset(
                             "assets/icons/add_alert.svg",
-                            height: size.height * 0.05,
+                            height: size.height * 0.03,
                             color: Colors.white,
                           ),
                         ),

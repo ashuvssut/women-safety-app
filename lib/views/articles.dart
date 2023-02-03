@@ -19,11 +19,10 @@ class _ArticlesState extends State<Articles> {
       ),
       body: Container(
         child: Text(
-          "This Page is under development",
+          "This Screen is under development",
           textAlign: TextAlign.center,
         ),
       ),
     );
-  
   }
 }

@@ -49,7 +49,6 @@ class _AddContactsState extends State<AddContacts> {
         margin: EdgeInsets.only(top: 30, right: 20, left: 20, bottom: 0),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.black12, width: 0.5),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -84,6 +83,7 @@ class _AddContactsState extends State<AddContacts> {
                   size: 35,
                 ),
                 style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -91,6 +91,9 @@ class _AddContactsState extends State<AddContacts> {
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             Expanded(
               child: getContactListView(),

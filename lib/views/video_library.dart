@@ -19,11 +19,10 @@ class _VideoLibState extends State<VideoLib> {
       ),
       body: Container(
         child: Text(
-          "This Page is under development",
+          "This Screen is under development",
           textAlign: TextAlign.center,
         ),
       ),
     );
-  
   }
 }
