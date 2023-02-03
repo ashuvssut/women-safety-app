@@ -93,7 +93,7 @@ class DatabaseHelper {
     var contactMapList = await getContactMapList(); // Get 'Map List' from database
     int count = contactMapList.length; // Count the number of map entries in db table
 
-    List<TContact> contactList = List<TContact>();
+    List<TContact> contactList = [];
     // For loop to create a 'Contact List' from a 'Map List'
     for (int i = 0; i < count; i++) {
       contactList.add(TContact.fromMapObject(contactMapList[i]));

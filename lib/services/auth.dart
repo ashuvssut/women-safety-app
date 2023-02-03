@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,15 +22,11 @@ class AuthMethods {
     final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
     try {
-      final GoogleSignInAccount googleSignInAccount =
-          await _googleSignIn.signIn();
+      final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
 
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken);
+      final AuthCredential credential = GoogleAuthProvider.credential(idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
 
       UserCredential result = await _auth.signInWithCredential(credential);
 
@@ -47,8 +42,7 @@ class AuthMethods {
         SharedPreferenceHelper.saveUserProfilePicKey(userDetails.photoURL);
         SharedPreferenceHelper.saveUserUIDKey(userDetails.uid);
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
       }
 
       return userDetails;

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:contacts_service/contacts_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -186,7 +185,7 @@ class _SelectContactState extends State<SelectContact> {
                     padding: EdgeInsets.all(20),
                     child: Text(
                       isSearching ? 'No search results to show' : 'No contacts found yet',
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   )
           ],

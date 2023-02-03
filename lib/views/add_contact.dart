@@ -29,7 +29,7 @@ class _AddContactsState extends State<AddContacts> {
   @override
   Widget build(BuildContext context) {
     if (contactList == null) {
-      contactList = List<TContact>();
+      contactList = [];
     }
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -59,18 +59,21 @@ class _AddContactsState extends State<AddContacts> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ButtonTheme(
-              height: 70,
-              minWidth: double.infinity,
-              child: RaisedButton.icon(
+            ElevatedButtonTheme(
+              data: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 10,
+                ),
+              ),
+              child: ElevatedButton.icon(
                 onPressed: () {
                   navigateToSelectContact();
                 },
-                elevation: 10,
-                highlightElevation: 15,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
                 label: Text(
                   'Add a Trusted Contact',
                   style: TextStyle(fontSize: 25),
@@ -80,8 +83,13 @@ class _AddContactsState extends State<AddContacts> {
                   color: Colors.white,
                   size: 35,
                 ),
-                textColor: Colors.white,
-                color: Colors.green,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
               ),
             ),
             Expanded(
@@ -95,7 +103,7 @@ class _AddContactsState extends State<AddContacts> {
   }
 
   ListView getContactListView() {
-    TextStyle titleStyle = Theme.of(context).textTheme.subtitle1;
+    TextStyle titleStyle = Theme.of(context).textTheme.titleMedium;
     return ListView.builder(
       shrinkWrap: true,
       itemCount: count,

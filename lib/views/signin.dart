@@ -36,26 +36,29 @@ class _SignInState extends State<SignIn> {
               width: 300,
               child: ButtonTheme(
                 buttonColor: Colors.white,
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     AuthMethods().signInWithGoogle(context);
                   },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(38.0),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(38.0),
+                    ),
                   ),
                   child: Row(children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 13, right: 17, bottom: 13, left: 7),
                       child: SvgPicture.asset(
                         "assets/icons/google.svg",
-                        height: size.height * 0.05,
+                        height: size.height * 0.025,
                       ),
                     ),
                     Text(
                       "Sign In with Google",
                       style: TextStyle(
                         color: Colors.blue,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w500,
                         fontSize: 21,
                       ),
                     ),

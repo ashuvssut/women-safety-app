@@ -145,7 +145,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildSOSdelayTime(),
                 // _buildSOStimeInterval(),
                 SizedBox(height: 100),
-                RaisedButton(
+                ElevatedButton(
                   child: Text(
                     'Save Changes',
                     style: TextStyle(color: Colors.blue, fontSize: 16),

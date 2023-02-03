@@ -88,7 +88,6 @@ class _HomeState extends State<Home> {
         SharedPreferenceHelper.saveSOSrepeatInterval(value);
       }
     });
-  
   }
 
   void requestUserPermission(bool isAllowed) async {
@@ -208,18 +207,20 @@ class _HomeState extends State<Home> {
                   ButtonTheme(
                     buttonColor: Colors.white,
                     height: 200,
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Articles()),
                         );
                       },
-                      shape: RoundedRectangleBorder(
+                      style: ElevatedButton.styleFrom(
                         side: BorderSide(
                           color: Colors.black26,
                         ),
-                        borderRadius: BorderRadius.circular(15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.30,
@@ -245,18 +246,20 @@ class _HomeState extends State<Home> {
                   ButtonTheme(
                     buttonColor: Colors.white,
                     height: 200,
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => VideoLib()),
                         );
                       },
-                      shape: RoundedRectangleBorder(
+                      style: ElevatedButton.styleFrom(
                         side: BorderSide(
                           color: Colors.black26,
                         ),
-                        borderRadius: BorderRadius.circular(15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.30,
@@ -335,8 +338,8 @@ class _HomeState extends State<Home> {
                       _triggerSendSOS();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                      onPrimary: Colors.white,
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
                       padding: EdgeInsets.all(30),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(45.0),
@@ -374,8 +377,8 @@ class _HomeState extends State<Home> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      onPrimary: Colors.white,
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
                       padding: EdgeInsets.all(4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32.0),

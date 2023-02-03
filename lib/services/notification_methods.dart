@@ -32,7 +32,7 @@ class NotificationMethods {
                 payload: {
                   'finished': 'true'
                 },
-                autoCancel: false,
+                autoDismissible: false,
                 notificationLayout: NotificationLayout.ProgressBar,
                 progress: null,
                 locked: true,
@@ -41,14 +41,14 @@ class NotificationMethods {
                 NotificationActionButton(
                   key: 'START',
                   label: 'Send SOS',
-                  autoCancel: false,
+                  autoDismissible: false,
                   buttonType: ActionButtonType.Default,
                   enabled: true,
                 ),
                 NotificationActionButton(
                   key: 'STOP_DISABLED',
                   label: 'Cancel SOS',
-                  autoCancel: false,
+                  autoDismissible: false,
                   buttonType: ActionButtonType.Default,
                   enabled: false,
                 )
@@ -65,7 +65,7 @@ class NotificationMethods {
                 payload: {
                   'finished': 'true'
                 },
-                autoCancel: false,
+                autoDismissible: false,
                 notificationLayout: NotificationLayout.ProgressBar,
                 progress: null,
                 locked: true,
@@ -74,14 +74,14 @@ class NotificationMethods {
                 NotificationActionButton(
                   key: 'START',
                   label: 'Send SOS',
-                  autoCancel: false,
+                  autoDismissible: false,
                   buttonType: ActionButtonType.Default,
                   enabled: true,
                 ),
                 NotificationActionButton(
                   key: 'STOP_DISABLED',
                   label: 'Cancel SOS',
-                  autoCancel: false,
+                  autoDismissible: false,
                   buttonType: ActionButtonType.Default,
                   enabled: false,
                 )
@@ -98,21 +98,21 @@ class NotificationMethods {
                 },
                 notificationLayout: NotificationLayout.ProgressBar,
                 progress: min((simulatedStep / maxStep * 100).round(), 100),
-                autoCancel: false,
+                autoDismissible: false,
                 locked: true,
               ),
               actionButtons: [
                 NotificationActionButton(
                   key: 'START_DISABLED',
                   label: 'Sending SOS...',
-                  autoCancel: false,
+                  autoDismissible: false,
                   buttonType: ActionButtonType.Default,
                   enabled: false,
                 ),
                 NotificationActionButton(
                   key: 'STOP',
                   label: 'Cancel SOS',
-                  autoCancel: false,
+                  autoDismissible: false,
                   buttonType: ActionButtonType.Default,
                   enabled: true,
                 )
@@ -133,7 +133,7 @@ class NotificationMethods {
         payload: {
           'finished': 'true'
         },
-        autoCancel: false,
+        autoDismissible: false,
         notificationLayout: NotificationLayout.ProgressBar,
         progress: null,
         locked: true,
@@ -142,14 +142,14 @@ class NotificationMethods {
         NotificationActionButton(
           key: 'START',
           label: 'Send SOS',
-          autoCancel: false,
+          autoDismissible: false,
           buttonType: ActionButtonType.Default,
           enabled: true,
         ),
         NotificationActionButton(
           key: 'STOP_DISABLED',
           label: 'Cancel SOS',
-          autoCancel: false,
+          autoDismissible: false,
           buttonType: ActionButtonType.Default,
           enabled: false,
         )
