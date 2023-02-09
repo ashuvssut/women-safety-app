@@ -28,11 +28,22 @@ class _SelectContactState extends State<SelectContact> {
   }
 
   getContactsPermissions() async {
-    if (await Permission.contacts.request().isGranted) {
-      getAllContacts();
-      searchController.addListener(() {
-        filterContacts();
-      });
+    try {
+      if (!await Permission.contacts.isGranted) {
+        final isGranted = await Permission.contacts.request().isGranted;
+        if (!isGranted) {
+          Fluttertoast.showToast(msg: "Please grant contacts permission to continue");
+          return;
+        }
+      }
+      if (await Permission.contacts.isGranted) {
+        getAllContacts();
+        searchController.addListener(() {
+          filterContacts();
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

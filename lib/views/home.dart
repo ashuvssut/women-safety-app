@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:women_safety_app/helper_functions/database_helper.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/SOS_util.dart';
@@ -28,6 +29,7 @@ class _HomeState extends State<Home> {
   bool notificationsAllowed = false;
 
   void getPermission() async {
+    await Permission.contacts.request();
     await SOSMethods.getLocationPermission();
     await SOSMethods.getSMSPermission();
   }
