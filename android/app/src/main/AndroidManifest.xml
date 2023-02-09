@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <application
         android:name="${applicationName}"
-        android:label="With You - Women Safety App"
+        android:label="WithYou - Women Safety App"
         android:icon="@mipmap/ic_launcher">
         <!-- REF: android:exported="true" => reason:- https://developer.android.com/guide/topics/manifest/activity-element#exported -->
         <activity

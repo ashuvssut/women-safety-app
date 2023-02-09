@@ -1,4 +1,4 @@
-# With you - Women safety app 
+# Withyou - Women safety app 
 
 An App that can **send current location of the user** to her *trusted list* of contacts when in danger with just one tap **via SMS**.
 

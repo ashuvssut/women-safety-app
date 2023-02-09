@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
         shadowColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          "With You",
+          "WithYou",
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
