@@ -1,9 +1,9 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:women_safety_app/views/home.dart';
+import 'package:women_safety_app/services/auth.dart';
+import 'package:women_safety_app/views/home.dart';
 import 'package:women_safety_app/views/signin.dart';
-// import 'package:women_safety_app/views/signin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +37,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Future<Widget> getDefaultRoute() async {
+    final user = await AuthMethods().getCurrentUser();
+    if (user != null) return Home();
+
+    return SignIn();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +52,20 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignIn(),
+      home: FutureBuilder(
+        future: getDefaultRoute(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data;
+          } else {
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
