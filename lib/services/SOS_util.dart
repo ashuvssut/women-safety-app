@@ -34,7 +34,26 @@ class SOSMethods {
     }
   }
 
-  static Future<PositionDetails> _determinePosition() async {
+  static Future<bool> getSMSPermission() async {
+    final Telephony telephony = Telephony.instance;
+
+    bool serviceEnabled;
+
+    serviceEnabled = await telephony.requestSmsPermissions;
+    if (!serviceEnabled) {
+      Fluttertoast.showToast(msg: 'Please allow SMS Permission');
+      serviceEnabled = await telephony.requestSmsPermissions;
+    }
+
+    if (!serviceEnabled) {
+      Fluttertoast.showToast(msg: 'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  static Future<bool> getLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -53,6 +72,21 @@ class SOSMethods {
 
     if (permission == LocationPermission.deniedForever) {
       Fluttertoast.showToast(msg: 'Location permissions are permanently denied, App cannot request permissions.');
+    }
+
+    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  static Future<PositionDetails> _determinePosition() async {
+    // check if location service is enabled using getLocationPermission()
+    bool locationPermission = await getLocationPermission();
+    if (!locationPermission) {
+      Fluttertoast.showToast(msg: 'Location Service is not enabled. SOS Failed. Please enable Location Service in your phone settings.');
+      return null;
     }
 
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);

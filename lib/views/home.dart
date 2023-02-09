@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:women_safety_app/helper_functions/database_helper.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
+import 'package:women_safety_app/services/SOS_util.dart';
 import 'package:women_safety_app/services/auth.dart';
 import 'package:women_safety_app/services/notification_methods.dart';
 import 'package:women_safety_app/services/notification_stream_listeners.dart';
@@ -25,6 +26,12 @@ class _HomeState extends State<Home> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   String userName, userEmail, imageURL;
   bool notificationsAllowed = false;
+
+  void getPermission() async {
+    await SOSMethods.getLocationPermission();
+    await SOSMethods.getSMSPermission();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +95,8 @@ class _HomeState extends State<Home> {
         SharedPreferenceHelper.saveSOSrepeatInterval(value);
       }
     });
+
+    getPermission();
   }
 
   void requestUserPermission(bool isAllowed) async {
