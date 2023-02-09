@@ -24,10 +24,10 @@ class _SelectContactState extends State<SelectContact> {
   @override
   void initState() {
     super.initState();
-    getPermissions();
+    getContactsPermissions();
   }
 
-  getPermissions() async {
+  getContactsPermissions() async {
     if (await Permission.contacts.request().isGranted) {
       getAllContacts();
       searchController.addListener(() {
@@ -50,7 +50,7 @@ class _SelectContactState extends State<SelectContact> {
       Colors.orange
     ];
     int colorIndex = 0;
-    List<Contact> _contacts = (await ContactsService.getContacts()).toList();
+    List<Contact> _contacts = (await ContactsService.getContacts(withThumbnails: false)).toList();
     _contacts.forEach((contact) {
       Color baseColor = colors[colorIndex];
       contactsColorMap[contact.displayName] = baseColor;
