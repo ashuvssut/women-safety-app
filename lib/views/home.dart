@@ -189,8 +189,9 @@ class _HomeState extends State<Home> {
             new ListTile(
               title: Text("Logout"),
               tileColor: Colors.grey[300],
-              onTap: () {
-                AuthMethods().signOut();
+              onTap: () async {
+                NotificationMethods.removeAllNotifications();
+                await AuthMethods().signOut();
                 Navigator.pushReplacement(
                   context,
                   new MaterialPageRoute(builder: (context) => SignIn()),

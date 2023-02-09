@@ -6,36 +6,52 @@ import 'package:women_safety_app/services/notification_methods.dart';
 
 class ListenToNotificationStream {
   static void createdStream() {
-    AwesomeNotifications().createdStream.listen((receivedNotification) {
-      // log('created. finished: ' + receivedNotification.payload.values.toString());
-    });
+    try {
+      AwesomeNotifications().createdStream.listen((receivedNotification) {
+        // log('created. finished: ' + receivedNotification.payload.values.toString());
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   static void displayedStream() {
-    AwesomeNotifications().displayedStream.listen((receivedNotification) {
-      // log('displayed: finished: ' + receivedNotification.payload.values.toString());
-    });
+    try {
+      AwesomeNotifications().displayedStream.listen((receivedNotification) {
+        // log('displayed: finished: ' + receivedNotification.payload.values.toString());
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   static void actionStream() {
-    AwesomeNotifications().actionStream.listen((receivedNotification) {
-      // log('actions. finished: ' + receivedNotification.payload.values.toString());
-      // log('actions. finished: ' + receivedNotification.buttonKeyPressed.toString());
+    try {
+      AwesomeNotifications().actionStream.listen((receivedNotification) {
+        // log('actions. finished: ' + receivedNotification.payload.values.toString());
+        // log('actions. finished: ' + receivedNotification.buttonKeyPressed.toString());
 
-      if (receivedNotification.buttonKeyPressed == 'START') {
-        //PRESSED SEND SOS
-        NotificationMethods.showProgressNotification(1337);
-      } else if(receivedNotification.buttonKeyPressed == 'STOP'){
-        //PRESSED CANCEL
-        NotificationMethods.cancelProgressNotification();
-      }
-    });
+        if (receivedNotification.buttonKeyPressed == 'START') {
+          //PRESSED SEND SOS
+          NotificationMethods.showProgressNotification(1337);
+        } else if (receivedNotification.buttonKeyPressed == 'STOP') {
+          //PRESSED CANCEL
+          NotificationMethods.cancelProgressNotification();
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   static void dismissedStream() {
-    AwesomeNotifications().dismissedStream.listen((receivedNotification) {
-      String dismissedSourceText = AssertUtils.toSimpleEnumString(receivedNotification.dismissedLifeCycle);
-      Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
-    });
+    try {
+      AwesomeNotifications().dismissedStream.listen((receivedNotification) {
+        String dismissedSourceText = AssertUtils.toSimpleEnumString(receivedNotification.dismissedLifeCycle);
+        Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
