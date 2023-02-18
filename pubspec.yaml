@@ -17,11 +17,14 @@ dependencies:
   shared_preferences:
   firebase_core: ^0.5.2+1
   awesome_notifications:
-  fluttertoast: 
-  giffy_dialog: 
+  fluttertoast:
+  giffy_dialog:
+    git:
+      url: https://github.com/ashuvssut/giffy_dialog.git
+      ref: master
   cupertino_icons: ^1.0.0
   flutter_svg: ^0.19.1
-  
+
   sqflite:
   telephony:
   geolocator:
@@ -35,7 +38,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
-  - assets/images/
-  - assets/icons/
+    - assets/images/
+    - assets/icons/
