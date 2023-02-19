@@ -19,7 +19,7 @@ class _AppDrawerState extends State<AppDrawer> {
   void initState() {
     super.initState();
     SharedPreferenceHelper.getUserNameKey().then((value) => setState(() => userName = value ?? ""));
-    SharedPreferenceHelper.getUserEmail().then((value) => setState(() => userEmail = value));
+    SharedPreferenceHelper.getUserEmail().then((value) => setState(() => userEmail = value ?? ""));
     SharedPreferenceHelper.getUserProfilePicKey()
         .then((value) => setState(() => imageURL = value ?? ""));
   }

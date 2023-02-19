@@ -40,9 +40,9 @@ class SharedPreferenceHelper {
     return await prefs.setString(userEmailKey, userEmail);
   }
 
-  static Future<String> getUserEmail() async {
+  static Future<String?> getUserEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(userEmailKey)!;
+    return prefs.getString(userEmailKey);
   }
 
   static Future<bool> saveUserUIDKey(String userUID) async {
