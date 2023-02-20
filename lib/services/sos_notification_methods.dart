@@ -2,22 +2,43 @@ import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:women_safety_app/services/shared_preferences.dart';
 import 'package:women_safety_app/services/sos_message_methods.dart';
 
-class NotificationMethods {
-  static int maxStep = 10;
-  static int simulatedStep = 1;
+class SosNotificationMethods {
+  static String channelKey = 'SOS_init';
+
+  static Future<void> initializeSosChannel() async {
+    await AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      'resource://drawable/ic_stat_onesignal_default',
+      [
+        NotificationChannel(
+          icon: 'resource://drawable/ic_stat_onesignal_default',
+          channelKey: channelKey,
+          channelName: 'SOS Initializer',
+          channelDescription: 'Notification channel for SOS Triggering',
+          defaultColor: Colors.deepPurple,
+          ledColor: Colors.deepPurple,
+          vibrationPattern: lowVibrationPattern,
+          onlyAlertOnce: true,
+          importance: NotificationImportance.Max,
+        ),
+      ],
+      debug: true,
+    );
+  }
 
   static Future<bool> createSendSosNotification(int id) async {
     return await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
-        channelKey: 'progress_bar',
-        title: 'Initiate SOS',
+        channelKey: channelKey,
+        title: "Initiate SOS",
         payload: {'finished': 'true'},
         autoDismissible: false,
-        notificationLayout: NotificationLayout.ProgressBar,
+        notificationLayout: NotificationLayout.Default,
         progress: null,
         locked: true,
       ),
@@ -26,25 +47,20 @@ class NotificationMethods {
           key: 'START',
           label: 'Send SOS',
           autoDismissible: false,
-          actionType: ActionType.Default,
+          actionType: ActionType.KeepOnTop,
           enabled: true,
         ),
-        NotificationActionButton(
-          key: 'STOP_DISABLED',
-          label: 'Cancel SOS',
-          autoDismissible: false,
-          actionType: ActionType.Default,
-          enabled: false,
-        )
       ],
     );
   }
 
-  static Future<bool> createProgressNotification(int id) async {
+  static int maxStep = 10;
+  static int simulatedStep = 1;
+  static Future<bool> createSendingSosProgressNotification(int id) async {
     return await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
-        channelKey: 'progress_bar',
+        channelKey: channelKey,
         title: 'SOS is initiating in ${maxStep - simulatedStep} seconds',
         payload: {'finished': 'false'},
         notificationLayout: NotificationLayout.ProgressBar,
@@ -54,17 +70,10 @@ class NotificationMethods {
       ),
       actionButtons: [
         NotificationActionButton(
-          key: 'START_DISABLED',
-          label: 'Sending SOS...',
-          autoDismissible: false,
-          actionType: ActionType.Default,
-          enabled: false,
-        ),
-        NotificationActionButton(
           key: 'STOP',
           label: 'Cancel SOS',
           autoDismissible: false,
-          actionType: ActionType.Default,
+          actionType: ActionType.KeepOnTop,
           enabled: true,
         )
       ],
@@ -85,15 +94,16 @@ class NotificationMethods {
       await Future.delayed(
         const Duration(seconds: 1),
         () async {
+          log('simulatedStep is $simulatedStep');
           if (simulatedStep == maxStep + 1) {
-            // CANCEL PROGRESS && SEND SOS
-            createSendSosNotification(id);
+            cancelProgressNotification();
+            await createSendSosNotification(id);
             SosMethods.sendSos();
           } else if (simulatedStep > maxStep + 1) {
-            // CANCEL PROGRESS
-            createSendSosNotification(id);
+            cancelProgressNotification();
+            await createSendSosNotification(id);
           } else {
-            createProgressNotification(id);
+            createSendingSosProgressNotification(id);
           }
         },
       );
@@ -101,14 +111,21 @@ class NotificationMethods {
   }
 
   static void cancelProgressNotification() {
-    simulatedStep = maxStep + 2; // hits loop break statement in showProgressNotification() method
+    simulatedStep = maxStep + 2; // hits loop break condition in showProgressNotification() method
   }
 
-  static Future<void> removeNotification(int id) async {
-    await AwesomeNotifications().cancel(id);
+  static Future<void> removeNotification() async {
+    await AwesomeNotifications().cancelNotificationsByChannelKey(channelKey);
+    simulatedStep = 1;
   }
 
-  static Future<void> removeAllNotifications() async {
-    await AwesomeNotifications().cancelAll();
+  static onSosNotificationActionReceived(ReceivedAction receivedAction) {
+    if (receivedAction.buttonKeyPressed == 'START') {
+      //PRESSED SEND SOS
+      initiateSosProgressNotification(1337);
+    } else if (receivedAction.buttonKeyPressed == 'STOP') {
+      //PRESSED CANCEL
+      cancelProgressNotification();
+    }
   }
 }

@@ -50,7 +50,7 @@ class BottomContent extends StatelessWidget {
                   Fluttertoast.showToast(msg: 'Please Add Trusted contacts to send SOS.');
                 } else {
                   Fluttertoast.showToast(msg: 'Sending SOS...');
-                  NotificationMethods.initiateSosProgressNotification(1337);
+                  SosNotificationMethods.initiateSosProgressNotification(1337);
                 }
               },
               style: ElevatedButton.styleFrom(

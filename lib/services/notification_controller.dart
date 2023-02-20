@@ -1,27 +1,12 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:women_safety_app/services/sos_notification_methods.dart';
 
 class NotificationController {
   static ReceivedAction? initialAction;
   static Future<void> initializeLocalNotifications() async {
-    await AwesomeNotifications().initialize(
-      // set the icon to null if you want to use the default app icon
-      'resource://drawable/ic_stat_onesignal_default',
-      [
-        NotificationChannel(
-          icon: 'resource://drawable/ic_stat_onesignal_default',
-          channelKey: 'SOS_init',
-          channelName: 'SOS Initializer',
-          channelDescription: 'Notification channel for SOS Triggering',
-          defaultColor: Colors.deepPurple,
-          ledColor: Colors.deepPurple,
-          vibrationPattern: lowVibrationPattern,
-          onlyAlertOnce: true,
-          importance: NotificationImportance.Max,
-        ),
-      ],
-      debug: true,
-    );
+    // initialize all the notification channels here
+    SosNotificationMethods.initializeSosChannel();
 
     // Get initial notification action is optional
     initialAction =
@@ -45,12 +30,8 @@ class NotificationController {
   /// Use this method to detect when the user taps on a notification or action button
   @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
-    if (receivedAction.buttonKeyPressed == 'START') {
-      //PRESSED SEND SOS
-      // NotificationMethods.showProgressNotification(1337);
-    } else if (receivedAction.buttonKeyPressed == 'STOP') {
-      //PRESSED CANCEL
-      // NotificationMethods.cancelProgressNotification();
+    if (receivedAction.channelKey == SosNotificationMethods.channelKey) {
+      SosNotificationMethods.onSosNotificationActionReceived(receivedAction);
     }
 
     // Navigate into pages, avoiding to open the notification details page over another details page already opened
