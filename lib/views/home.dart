@@ -1,37 +1,40 @@
 // import 'dart:developer';
 
 import "package:flutter/material.dart";
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:giffy_dialog/giffy_dialog.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:women_safety_app/helper_functions/database_helper.dart';
-import 'package:women_safety_app/helper_functions/shared_preference.dart';
-import 'package:women_safety_app/services/SOS_util.dart';
-import 'package:women_safety_app/services/auth.dart';
-import 'package:women_safety_app/services/notification_methods.dart';
-import 'package:women_safety_app/services/notification_stream_listeners.dart';
-import 'package:women_safety_app/views/articles.dart';
-import 'package:women_safety_app/views/add_contact.dart';
-import 'package:women_safety_app/views/settings.dart';
-import 'package:women_safety_app/views/signin.dart';
-import 'package:women_safety_app/views/video_library.dart';
+import "package:women_safety_app/services/notification_controller.dart";
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:giffy_dialog/giffy_dialog.dart';
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:women_safety_app/helper_functions/database_helper.dart';
+// import 'package:women_safety_app/helper_functions/shared_preference.dart';
+// import 'package:women_safety_app/services/SOS_util.dart';
+// import 'package:women_safety_app/services/auth.dart';
+// import 'package:women_safety_app/services/notification_methods.dart';
+// import 'package:women_safety_app/services/notification_stream_listeners.dart';
+// import 'package:women_safety_app/views/articles.dart';
+// import 'package:women_safety_app/views/add_contact.dart';
+// import 'package:women_safety_app/views/settings.dart';
+// import 'package:women_safety_app/views/signin.dart';
+// import 'package:women_safety_app/views/video_library.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
-  String userName, userEmail, imageURL;
+  // DatabaseHelper databaseHelper = DatabaseHelper();
+  // String userName, userEmail, imageURL;
   bool notificationsAllowed = false;
 
   void getPermission() async {
-    await Permission.contacts.request();
-    await SOSMethods.getLocationPermission();
-    await SOSMethods.getSMSPermission();
+    // await Permission.contacts.request();
+    // await SOSMethods.getLocationPermission();
+    // await SOSMethods.getSMSPermission();
   }
 
   @override
@@ -39,168 +42,178 @@ class _HomeState extends State<Home> {
     super.initState();
 
     // Prepare elements for drawer widget
-    SharedPreferenceHelper.getUserNameKey().then((value) => setState(() => {
-          userName = value
-        }));
-    SharedPreferenceHelper.getUserEmail().then((value) => setState(() => {
-          userEmail = value
-        }));
-    SharedPreferenceHelper.getUserProfilePicKey().then((value) => setState(() => {
-          imageURL = value
-        }));
+    // SharedPreferenceHelper.getUserNameKey().then((value) => setState(() => {
+    //       userName = value
+    //     }));
+    // SharedPreferenceHelper.getUserEmail().then((value) => setState(() => {
+    //       userEmail = value
+    //     }));
+    // SharedPreferenceHelper.getUserProfilePicKey().then((value) => setState(() => {
+    //       imageURL = value
+    //     }));
 
     // Ensure Notifications are Allowed
+
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      setState(() {
-        notificationsAllowed = isAllowed;
-      });
+      notificationsAllowed = isAllowed;
 
       if (!isAllowed) {
-        requestUserPermission(isAllowed);
+        // requestUserPermission(isAllowed);
+        AwesomeNotifications().requestPermissionToSendNotifications();
       } else {
         // log('Notifications are allowed');
       }
     });
 
-    NotificationMethods.createNullProgressNotification(1337);
-    ListenToNotificationStream.createdStream();
-    ListenToNotificationStream.displayedStream();
-    ListenToNotificationStream.actionStream();
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: (ReceivedAction receivedAction) {
+        return NotificationController.onActionReceivedMethod(context, receivedAction);
+      },
+      onNotificationCreatedMethod: (ReceivedNotification receivedNotification) {
+        return NotificationController.onNotificationCreatedMethod(context, receivedNotification);
+      },
+      onNotificationDisplayedMethod: (ReceivedNotification receivedNotification) {
+        return NotificationController.onNotificationDisplayedMethod(context, receivedNotification);
+      },
+      onDismissActionReceivedMethod: (ReceivedAction receivedAction) {
+        return NotificationController.onDismissActionReceivedMethod(context, receivedAction);
+      },
+    );
 
     // Update SOS Shared Prefs
-    SharedPreferenceHelper.getMessageHead().then((value) async {
-      if (value != null) {
-        print('MessageHead is $value');
-      } else {
-        print('MessageHead is $value');
-        value = "I'm in trouble, plz help me. Reach this location:";
-        SharedPreferenceHelper.saveMessageHead(value);
-      }
-    });
+    // SharedPreferenceHelper.getMessageHead().then((value) async {
+    //   if (value != null) {
+    //     print('MessageHead is $value');
+    //   } else {
+    //     print('MessageHead is $value');
+    //     value = "I'm in trouble, plz help me. Reach this location:";
+    //     SharedPreferenceHelper.saveMessageHead(value);
+    //   }
+    // });
 
-    SharedPreferenceHelper.getSOSdelayTime().then((value) async {
-      if (value != null) {
-        print('SOSdelayTime is $value');
-      } else {
-        print('SOSdelayTime is $value');
-        value = 10;
-        SharedPreferenceHelper.saveSOSdelayTime(value);
-      }
-    });
+    // SharedPreferenceHelper.getSOSdelayTime().then((value) async {
+    //   if (value != null) {
+    //     print('SOSdelayTime is $value');
+    //   } else {
+    //     print('SOSdelayTime is $value');
+    //     value = 10;
+    //     SharedPreferenceHelper.saveSOSdelayTime(value);
+    //   }
+    // });
 
-    SharedPreferenceHelper.getSOSrepeatInterval().then((value) async {
-      if (value != null) {
-        print('SOS repeat interval is $value');
-      } else {
-        print('SOS repeat interval is $value');
-        value = 120;
-        SharedPreferenceHelper.saveSOSrepeatInterval(value);
-      }
-    });
+    // SharedPreferenceHelper.getSOSrepeatInterval().then((value) async {
+    //   if (value != null) {
+    //     print('SOS repeat interval is $value');
+    //   } else {
+    //     print('SOS repeat interval is $value');
+    //     value = 120;
+    //     SharedPreferenceHelper.saveSOSrepeatInterval(value);
+    //   }
+    // });
 
     getPermission();
   }
 
-  void requestUserPermission(bool isAllowed) async {
-    showDialog(
-      context: context,
-      builder: (_) => NetworkGiffyDialog(
-        buttonOkText: Text(
-          'Allow',
-          style: TextStyle(color: Colors.white),
-        ),
-        buttonCancelText: Text(
-          'Later',
-          style: TextStyle(color: Colors.white),
-        ),
-        buttonCancelColor: Colors.grey,
-        buttonOkColor: Colors.deepPurple,
-        buttonRadius: 0.0,
-        image: Image.asset("assets/images/animated-bell.gif", fit: BoxFit.cover),
-        title: Text(
-          'Get Notified!',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-        ),
-        description: Text(
-          'Allow Awesome Notifications to send you beautiful notifications!',
-          textAlign: TextAlign.center,
-        ),
-        entryAnimation: EntryAnimation.DEFAULT,
-        onCancelButtonPressed: () async {
-          Navigator.of(context).pop();
-          notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
-          setState(
-            () {
-              notificationsAllowed = notificationsAllowed;
-            },
-          );
-        },
-        onOkButtonPressed: () async {
-          Navigator.of(context).pop();
-          await AwesomeNotifications().requestPermissionToSendNotifications();
-          notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
-          setState(
-            () {
-              notificationsAllowed = notificationsAllowed;
-            },
-          );
-        },
-      ),
-    );
-  }
+  // void requestUserPermission(bool isAllowed) async {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => NetworkGiffyDialog(
+  //       buttonOkText: const Text(
+  //         'Allow',
+  //         style: TextStyle(color: Colors.white),
+  //       ),
+  //       buttonCancelText: const Text(
+  //         'Later',
+  //         style: TextStyle(color: Colors.white),
+  //       ),
+  //       buttonCancelColor: Colors.grey,
+  //       buttonOkColor: Colors.deepPurple,
+  //       buttonRadius: 0.0,
+  //       image: Image.asset("assets/images/animated-bell.gif", fit: BoxFit.cover),
+  //       title: const Text(
+  //         'Get Notified!',
+  //         textAlign: TextAlign.center,
+  //         style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+  //       ),
+  //       description: const Text(
+  //         'Allow Awesome Notifications to send you beautiful notifications!',
+  //         textAlign: TextAlign.center,
+  //       ),
+  //       entryAnimation: EntryAnimation.DEFAULT,
+  //       onCancelButtonPressed: () async {
+  //         Navigator.of(context).pop();
+  //         notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
+  //         setState(
+  //           () {
+  //             notificationsAllowed = notificationsAllowed;
+  //           },
+  //         );
+  //       },
+  //       onOkButtonPressed: () async {
+  //         Navigator.of(context).pop();
+  //         await AwesomeNotifications().requestPermissionToSendNotifications();
+  //         notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
+  //         setState(
+  //           () {
+  //             notificationsAllowed = notificationsAllowed;
+  //           },
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           "WithYou",
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
-      drawer: new Drawer(
+      drawer: Drawer(
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            new UserAccountsDrawerHeader(
-              accountName: new Text(userName == null ? "" : userName),
-              accountEmail: new Text(userEmail == null ? "" : userEmail),
-              currentAccountPicture: imageURL == null ? Icon(Icons.account_circle_rounded, size: 55) : new CircleAvatar(backgroundImage: NetworkImage(imageURL)),
-            ),
-            new ListTile(
-              title: Text("Settings"),
-              subtitle: Text("SOS delay, Edit SOS message..."),
+            // UserAccountsDrawerHeader(
+            //   accountName: Text(userName == null ? "" : userName),
+            //   accountEmail: Text(userEmail == null ? "" : userEmail),
+            //   currentAccountPicture: imageURL == null ? const Icon(Icons.account_circle_rounded, size: 55) : CircleAvatar(backgroundImage: NetworkImage(imageURL)),
+            // ),
+            ListTile(
+              title: const Text("Settings"),
+              subtitle: const Text("SOS delay, Edit SOS message..."),
               onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => SettingsPage()),
+                // );
               },
-              trailing: FittedBox(
+              trailing: const FittedBox(
                 child: Icon(Icons.settings, size: 25),
               ),
             ),
-            new ListTile(
-              title: Text("Logout"),
+            ListTile(
+              title: const Text("Logout"),
               tileColor: Colors.grey[300],
               onTap: () async {
-                NotificationMethods.removeAllNotifications();
-                await AuthMethods().signOut();
-                Navigator.pushReplacement(
-                  context,
-                  new MaterialPageRoute(builder: (context) => SignIn()),
-                );
+                // NotificationMethods.removeAllNotifications();
+                // await AuthMethods().signOut();
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => SignIn()),
+                // );
               },
-              trailing: SvgPicture.asset(
-                "assets/icons/log-out.svg",
-                height: 25,
-              ),
+              // trailing: SvgPicture.asset(
+              //   "assets/icons/log-out.svg",
+              //   height: 25,
+              // ),
             ),
           ],
         ),
@@ -221,13 +234,13 @@ class _HomeState extends State<Home> {
                     height: 200,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Articles()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => Articles()),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
-                        side: BorderSide(
+                        side: const BorderSide(
                           color: Colors.black26,
                         ),
                         shape: RoundedRectangleBorder(
@@ -236,16 +249,16 @@ class _HomeState extends State<Home> {
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.30,
-                        margin: EdgeInsetsDirectional.symmetric(vertical: 20),
+                        margin: const EdgeInsetsDirectional.symmetric(vertical: 20),
                         // height: 150,
                         child: Column(
-                          children: [
+                          children: const [
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: SvgPicture.asset(
-                                "assets/icons/law.svg",
-                                height: size.height * 0.1,
-                              ),
+                              padding: EdgeInsets.all(5.0),
+                              // child: SvgPicture.asset(
+                              //   "assets/icons/law.svg",
+                              //   height: size.height * 0.1,
+                              // ),
                             ),
                             Text(
                               "Women Safety Laws",
@@ -261,13 +274,13 @@ class _HomeState extends State<Home> {
                     height: 200,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => VideoLib()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => VideoLib()),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
-                        side: BorderSide(
+                        side: const BorderSide(
                           color: Colors.black26,
                         ),
                         shape: RoundedRectangleBorder(
@@ -276,15 +289,15 @@ class _HomeState extends State<Home> {
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.30,
-                        margin: EdgeInsetsDirectional.symmetric(vertical: 20),
+                        margin: const EdgeInsetsDirectional.symmetric(vertical: 20),
                         child: Column(
-                          children: [
+                          children: const [
                             Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: SvgPicture.asset(
-                                "assets/icons/self.svg",
-                                height: size.height * 0.1,
-                              ),
+                              padding: EdgeInsets.all(5),
+                              // child: SvgPicture.asset(
+                              //   "assets/icons/self.svg",
+                              //   height: size.height * 0.1,
+                              // ),
                             ),
                             Text(
                               "Self Defence and Awareness",
@@ -302,7 +315,7 @@ class _HomeState extends State<Home> {
           Container(
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blue,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.only(
@@ -317,7 +330,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 36, 16, 5),
                   child: Column(
-                    children: [
+                    children: const [
                       Text(
                         "Send Emergency",
                         style: TextStyle(
@@ -327,7 +340,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 0),
+                        padding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 0),
                         child: Text(
                           "SOS",
                           style: TextStyle(
@@ -340,38 +353,52 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
-                Center(
-                  child: ElevatedButton(
-                    child: SvgPicture.asset(
-                      "assets/icons/alert.svg",
-                      height: size.height * 0.1,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      _triggerSendSOS();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 110, 99),
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.all(30),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(45.0),
-                      ),
-                    ),
-                  ),
-                ),
+                // Center(
+                //   child: ElevatedButton(
+                //     child: SvgPicture.asset(
+                //       "assets/icons/alert.svg",
+                //       height: size.height * 0.1,
+                //       color: Colors.white,
+                //     ),
+                //     onPressed: () {
+                //       _triggerSendSOS();
+                //     },
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: const Color.fromARGB(255, 255, 110, 99),
+                //       foregroundColor: Colors.white,
+                //       padding: const EdgeInsets.all(30),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(45.0),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 40.0, right: 60, left: 60),
                   child: ElevatedButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => AddContacts()),
+                      // );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.all(4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
                     child: Row(
-                      children: [
+                      children: const [
                         Padding(
-                          padding: const EdgeInsets.only(left: 35.0, top: 8, bottom: 8, right: 8),
-                          child: SvgPicture.asset(
-                            "assets/icons/add_alert.svg",
-                            height: size.height * 0.03,
-                            color: Colors.white,
-                          ),
+                          padding: EdgeInsets.only(left: 35.0, top: 8, bottom: 8, right: 8),
+                          // child: SvgPicture.asset(
+                          //   "assets/icons/add_alert.svg",
+                          //   height: size.height * 0.03,
+                          //   color: Colors.white,
+                          // ),
                         ),
                         Text(
                           "Add Contacts",
@@ -382,20 +409,6 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddContacts()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.all(4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
                     ),
                   ),
                 ),
@@ -413,14 +426,14 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _triggerSendSOS() async {
-    int count = await databaseHelper.getCount();
+  // void _triggerSendSOS() async {
+  //   int count = await databaseHelper.getCount();
 
-    if (count == 0) {
-      Fluttertoast.showToast(msg: 'Please Add Trusted contacts to send SOS.');
-    } else {
-      Fluttertoast.showToast(msg: 'Sending SOS...');
-      NotificationMethods.showProgressNotification(1337);
-    }
-  }
+  //   if (count == 0) {
+  //     Fluttertoast.showToast(msg: 'Please Add Trusted contacts to send SOS.');
+  //   } else {
+  //     Fluttertoast.showToast(msg: 'Sending SOS...');
+  //     NotificationMethods.showProgressNotification(1337);
+  //   }
+  // }
 }
