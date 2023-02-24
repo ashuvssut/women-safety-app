@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:women_safety_app/services/auth.dart';
+import 'package:women_safety_app/views/home.dart';
 
 class SignIn extends StatefulWidget {
+  const SignIn({super.key});
+
   @override
-  _SignInState createState() => _SignInState();
+  State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
@@ -15,7 +18,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         centerTitle: true,
         title: Column(
-          children: [
+          children: const [
             Text("Sign in"),
           ],
         ),
@@ -25,7 +28,7 @@ class _SignInState extends State<SignIn> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 100.0),
+              padding: const EdgeInsets.only(top: 100.0),
               child: SvgPicture.asset(
                 "assets/icons/happy.svg",
                 height: size.height * 0.35,
@@ -37,8 +40,9 @@ class _SignInState extends State<SignIn> {
               child: ButtonTheme(
                 buttonColor: Colors.white,
                 child: ElevatedButton(
-                  onPressed: () {
-                    AuthMethods().signInWithGoogle(context);
+                  onPressed: () async {
+                    final user = await AuthMethods().signInWithGoogle(context);
+                    if (user != null && mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -54,7 +58,7 @@ class _SignInState extends State<SignIn> {
                         height: size.height * 0.025,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "Sign In with Google",
                       style: TextStyle(
                         color: Colors.blue,

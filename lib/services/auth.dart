@@ -10,11 +10,7 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // get current user
-  Future<User> getCurrentUser() async {
-    final currentUser = _auth.currentUser;
-    if (currentUser == null) throw Exception("No current user");
-    return currentUser;
-  }
+  Future<User?> getCurrentUser() async => _auth.currentUser;
 
   // sign in with google
   Future<User?> signInWithGoogle(BuildContext context) async {

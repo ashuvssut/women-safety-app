@@ -2,6 +2,9 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'services/auth.dart';
+import 'views/home.dart';
+import 'views/signin.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,15 +43,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<Widget> getDefaultRoute() async {
-    // final user = await AuthMethods().getCurrentUser();
-    // if (user != null) return Home();
-
-    // return SignIn();
-    return const Scaffold(
-      body: Center(
-        child: Text('Hello World'),
-      ),
-    );
+    final user = await AuthMethods().getCurrentUser();
+    if (user != null) return const Home();
+    return const SignIn();
   }
 
   @override
