@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 class SharedPreferenceHelper {
   //define keys
@@ -21,7 +22,7 @@ class SharedPreferenceHelper {
   //fetch data
   static Future<bool> getUserLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(userLoggedInKey);
+    return prefs.getBool(userLoggedInKey) ?? false;
   }
 
   static Future<bool> saveUserNameKey(String userName) async {
@@ -31,7 +32,9 @@ class SharedPreferenceHelper {
 
   static Future<String> getUserNameKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(userNameKey);
+    final value = prefs.getString(userNameKey);
+    if (value == null) throw Exception('UserName is null');
+    return value;
   }
 
   static Future<bool> saveUserEmailKey(String userEmail) async {
@@ -41,7 +44,7 @@ class SharedPreferenceHelper {
 
   static Future<String> getUserEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(userEmailKey);
+    return prefs.getString(userEmailKey)!;
   }
 
   static Future<bool> saveUserUIDKey(String userUID) async {
@@ -51,7 +54,9 @@ class SharedPreferenceHelper {
 
   static Future<String> getUserUIDKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(userUIDKey);
+    final value = prefs.getString(userUIDKey);
+    if (value == null) throw Exception('UserUID is null');
+    return value;
   }
 
   static Future<bool> saveUserProfilePicKey(String profileURL) async {
@@ -61,46 +66,52 @@ class SharedPreferenceHelper {
 
   static Future<String> getUserProfilePicKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(userProfilePicKey);
+    final value = prefs.getString(userProfilePicKey);
+    if (value == null) throw Exception('UserProfilePic is null');
+    return value;
   }
 
   static Future<bool> saveSOSdelayTime(int newSOSdelayTime) async {
-    // print(await getSOSdelayTime());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool result = await prefs.setInt(sosDelayTime, newSOSdelayTime);
-    print(await getSOSdelayTime());
+    log(await getSOSdelayTime().then((value) => value.toString()));
     return result;
   }
 
   static Future<int> getSOSdelayTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(sosDelayTime);
+    final value = prefs.getInt(sosDelayTime);
+    if (value == null) throw Exception('SOSdelayTime is null');
+    return value;
   }
 
   static Future<bool> saveSOSrepeatInterval(int newSOSrepeatInterval) async {
-    // print(await getSOSrepeatInterval());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool result = await prefs.setInt(sosRepeatInterval, newSOSrepeatInterval);
-    print(await getSOSrepeatInterval());
+    log(await getSOSrepeatInterval().then((value) => value.toString()));
     return result;
   }
 
   static Future<int> getSOSrepeatInterval() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(sosRepeatInterval);
+    final value = prefs.getInt(sosRepeatInterval);
+    if (value == null) throw Exception('SOSrepeatInterval is null');
+    return value;
   }
 
   static Future<bool> saveMessageHead(String newMessageHead) async {
     // print(await getMessageHead());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool result = await prefs.setString(messageHead, newMessageHead);
-    print(await getMessageHead());
+    log(await getMessageHead().then((value) => value.toString()));
     return result;
   }
 
   static Future<String> getMessageHead() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(messageHead);
+    final value = prefs.getString(messageHead);
+    if (value == null) throw Exception('MessageHead is null');
+    return value;
   }
 
   //clear
