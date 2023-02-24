@@ -30,11 +30,9 @@ class SharedPreferenceHelper {
     return await prefs.setString(userNameKey, userName);
   }
 
-  static Future<String> getUserNameKey() async {
+  static Future<String?> getUserNameKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString(userNameKey);
-    if (value == null) throw Exception('UserName is null');
-    return value;
+    return prefs.getString(userNameKey);
   }
 
   static Future<bool> saveUserEmailKey(String userEmail) async {
@@ -52,11 +50,9 @@ class SharedPreferenceHelper {
     return await prefs.setString(userUIDKey, userUID);
   }
 
-  static Future<String> getUserUIDKey() async {
+  static Future<String?> getUserUIDKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString(userUIDKey);
-    if (value == null) throw Exception('UserUID is null');
-    return value;
+    return prefs.getString(userUIDKey);
   }
 
   static Future<bool> saveUserProfilePicKey(String profileURL) async {
@@ -64,11 +60,9 @@ class SharedPreferenceHelper {
     return await prefs.setString(userProfilePicKey, profileURL);
   }
 
-  static Future<String> getUserProfilePicKey() async {
+  static Future<String?> getUserProfilePicKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString(userProfilePicKey);
-    if (value == null) throw Exception('UserProfilePic is null');
-    return value;
+    return prefs.getString(userProfilePicKey);
   }
 
   static Future<bool> saveSOSdelayTime(int newSOSdelayTime) async {
@@ -78,11 +72,9 @@ class SharedPreferenceHelper {
     return result;
   }
 
-  static Future<int> getSOSdelayTime() async {
+  static Future<int?> getSOSdelayTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final value = prefs.getInt(sosDelayTime);
-    if (value == null) throw Exception('SOSdelayTime is null');
-    return value;
+    return prefs.getInt(sosDelayTime);
   }
 
   static Future<bool> saveSOSrepeatInterval(int newSOSrepeatInterval) async {
@@ -92,11 +84,9 @@ class SharedPreferenceHelper {
     return result;
   }
 
-  static Future<int> getSOSrepeatInterval() async {
+  static Future<int?> getSOSrepeatInterval() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final value = prefs.getInt(sosRepeatInterval);
-    if (value == null) throw Exception('SOSrepeatInterval is null');
-    return value;
+    return prefs.getInt(sosRepeatInterval);
   }
 
   static Future<bool> saveMessageHead(String newMessageHead) async {
@@ -107,11 +97,9 @@ class SharedPreferenceHelper {
     return result;
   }
 
-  static Future<String> getMessageHead() async {
+  static Future<String?> getMessageHead() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString(messageHead);
-    if (value == null) throw Exception('MessageHead is null');
-    return value;
+    return prefs.getString(messageHead);
   }
 
   //clear
