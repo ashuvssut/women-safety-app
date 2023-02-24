@@ -1,47 +1,34 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:women_safety_app/services/auth.dart';
-import 'package:women_safety_app/views/home.dart';
-import 'package:women_safety_app/views/signin.dart';
+import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-
-  await AwesomeNotifications().initialize(
-    // set the icon to null if you want to use the default app icon
-    'resource://drawable/ic_stat_onesignal_default',
-    [
-      NotificationChannel(
-        icon: 'resource://drawable/ic_stat_onesignal_default',
-        channelKey: 'progress_bar',
-        channelName: 'Progress bar notifications',
-        channelDescription: 'Notifications with a progress bar layout',
-        defaultColor: Colors.deepPurple,
-        ledColor: Colors.deepPurple,
-        vibrationPattern: lowVibrationPattern,
-        onlyAlertOnce: true,
-        importance: NotificationImportance.Max,
-      ),
-    ],
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   Future<Widget> getDefaultRoute() async {
-    final user = await AuthMethods().getCurrentUser();
-    if (user != null) return Home();
+    // final user = await AuthMethods().getCurrentUser();
+    // if (user != null) return Home();
 
-    return SignIn();
+    // return SignIn();
+    return const Scaffold(
+      body: Center(
+        child: Text('Hello World'),
+      ),
+    );
   }
 
   @override
@@ -56,9 +43,9 @@ class _MyAppState extends State<MyApp> {
         future: getDefaultRoute(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return snapshot.data;
+            return snapshot.data!;
           } else {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),

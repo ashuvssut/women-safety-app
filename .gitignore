@@ -46,3 +46,8 @@ android/app/google-services.json
 
 # Others
 .dump/
+
+# firebase flutterfire generated files
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+lib/firebase_options.dart
