@@ -27,7 +27,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.7.0
   awesome_notifications: ^0.7.4+1
+  firebase_auth: ^4.2.9
   shared_preferences: ^2.0.18
+  fluttertoast: ^8.2.1
+  google_sign_in: ^6.0.1
 
 dev_dependencies:
   flutter_test:

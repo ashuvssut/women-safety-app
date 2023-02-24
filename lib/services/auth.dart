@@ -4,25 +4,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:women_safety_app/helper_functions/shared_preference.dart';
-import 'package:women_safety_app/views/home.dart';
+import 'package:women_safety_app/services/shared_preferences.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // get current user
   Future<User> getCurrentUser() async {
-    return _auth.currentUser;
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) throw Exception("No current user");
+    return currentUser;
   }
 
   // sign in with google
-  Future<User> signInWithGoogle(BuildContext context) async {
+  Future<User?> signInWithGoogle(BuildContext context) async {
     log("Trying to Login with Google");
 
-    final GoogleSignIn _googleSignIn = new GoogleSignIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
 
     try {
-      final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      if (googleSignInAccount == null) throw Exception("Sign in process was aborted.");
 
       final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
@@ -30,19 +32,18 @@ class AuthMethods {
 
       UserCredential result = await _auth.signInWithCredential(credential);
 
-      User userDetails = result.user;
+      User? userDetails = result.user;
 
-      if (result == null) {
-        log("Error:no user found");
+      if (userDetails == null) {
+        log("No user found");
       } else {
-        //save user info and then send to Home screen
+        //save user info and then navigate to Home screen
+        final email = userDetails.email, name = userDetails.displayName, photoURL = userDetails.photoURL;
         SharedPreferenceHelper.saveUserLoggedInStatus(true);
-        SharedPreferenceHelper.saveUserEmailKey(userDetails.email);
-        SharedPreferenceHelper.saveUserNameKey(userDetails.displayName);
-        SharedPreferenceHelper.saveUserProfilePicKey(userDetails.photoURL);
         SharedPreferenceHelper.saveUserUIDKey(userDetails.uid);
-
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+        if (email != null) SharedPreferenceHelper.saveUserEmailKey(email);
+        if (name != null) SharedPreferenceHelper.saveUserNameKey(name);
+        if (photoURL != null) SharedPreferenceHelper.saveUserProfilePicKey(photoURL);
       }
 
       return userDetails;
