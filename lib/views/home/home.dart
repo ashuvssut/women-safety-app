@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:women_safety_app/components/app_drawer.dart";
+import "package:women_safety_app/components/consent_popup.dart";
 // import "package:women_safety_app/services/notification_controller.dart";
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -32,7 +33,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // DatabaseHelper databaseHelper = DatabaseHelper();
 
-  bool notificationsAllowed = false;
+  // bool notificationsAllowed = false;
+
+  final isPermsGranted = false;
 
   void getPermission() async {
     // await Permission.contacts.request();
@@ -40,9 +43,21 @@ class _HomeState extends State<Home> {
     // await SOSMethods.getSMSPermission();
   }
 
+  Future<void> showPermsConsent() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const ConsentPopup();
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+
+    if (!isPermsGranted) Future.delayed(Duration.zero, () => showPermsConsent());
 
     // Prepare elements for drawer widget
 
