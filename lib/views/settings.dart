@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:women_safety_app/helper_functions/shared_preference.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:women_safety_app/services/shared_preferences.dart';
+import 'package:women_safety_app/services/sms_methods.dart';
 
-class SettingsPage extends StatefulWidget {
+class Settings extends StatefulWidget {
+  const Settings({super.key});
+
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  String _messageHead;
-  int _sosDelayTime;
-  int _sosRepeatInterval;
-  TextEditingController _messageHeadController;
-  TextEditingController _sosDelayTimeController;
-  TextEditingController _sosRepeatIntervalController;
+class _SettingsState extends State<Settings> {
+  String _messageHead = SmsMethods.messageHead;
+  int _sosDelayTime = SmsMethods.sosDelayTime;
+  int _sosRepeatInterval = SmsMethods.sosRepeatInterval;
+  TextEditingController? _messageHeadController;
+  TextEditingController? _sosDelayTimeController;
+  TextEditingController? _sosRepeatIntervalController;
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   Widget _buildMessageHead() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'SOS Message'),
+      decoration: const InputDecoration(labelText: 'SOS Message'),
       maxLength: 160,
       controller: _messageHeadController,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'SOS Message is Required';
-        }
+      validator: (value) {
+        if (value == null || value.isEmpty) return 'SOS Message is Required';
         return null;
       },
-      onSaved: (String value) async {
+      onSaved: (value) async {
+        if (value == null || value.isEmpty) value = SmsMethods.messageHead;
         _messageHead = value;
         await SharedPreferenceHelper.saveMessageHead(value);
       },
@@ -36,42 +39,53 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildSOSdelayTime() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'SOS delay time (seconds)'),
+      decoration: const InputDecoration(labelText: 'SOS delay time (seconds)'),
       keyboardType: TextInputType.number,
       controller: _sosDelayTimeController,
-      validator: (String value) {
-        int sosDelayTime = int.tryParse(value);
-
+      validator: (value) {
+        int? sosDelayTime = int.tryParse(value!);
         if (sosDelayTime == null || sosDelayTime <= 0) {
           return 'SOS delay time must be greater than 0';
         }
-
         return null;
       },
-      onSaved: (String value) async {
-        _sosDelayTime = int.tryParse(value);
-        await SharedPreferenceHelper.saveSOSdelayTime(int.tryParse(value));
+      onSaved: (value) async {
+        int? val = int.tryParse(value!);
+        if (val == null || val <= 0) {
+          Fluttertoast.showToast(
+              msg:
+                  'Invalid SOS delay time, setting to default value ${SmsMethods.sosDelayTime} seconds');
+          val = SmsMethods.sosDelayTime;
+        }
+        _sosDelayTime = val;
+        await SharedPreferenceHelper.saveSOSdelayTime(_sosDelayTime);
       },
     );
   }
 
   Widget _buildSOStimeInterval() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'SOS time Interval (seconds)'),
+      decoration: const InputDecoration(labelText: 'SOS time Interval (seconds)'),
       keyboardType: TextInputType.number,
       controller: _sosRepeatIntervalController,
-      validator: (String value) {
-        int sosTimeInterval = int.tryParse(value);
-
+      validator: (value) {
+        int? sosTimeInterval = int.tryParse(value!);
         if (sosTimeInterval == null || sosTimeInterval <= 0) {
           return 'SOS time Interval must be greater than 0';
         }
-
         return null;
       },
-      onSaved: (String value) async {
-        _sosRepeatInterval = int.tryParse(value);
-        await SharedPreferenceHelper.saveSOSrepeatInterval(int.tryParse(value));
+      onSaved: (value) async {
+        int? val = int.tryParse(value!);
+        if (val == null || val <= 0) {
+          Fluttertoast.showToast(
+            msg:
+                'Invalid SOS time Interval, setting to default value ${SmsMethods.sosRepeatInterval} seconds',
+          );
+          val = SmsMethods.sosRepeatInterval;
+        }
+        _sosRepeatInterval = val;
+        await SharedPreferenceHelper.saveSOSrepeatInterval(_sosRepeatInterval);
       },
     );
   }
@@ -79,46 +93,18 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    SharedPreferenceHelper.getMessageHead().then((value) async {
-      if (value != null) {
-        print('MessageHead is $value');
-      } else {
-        print('MessageHead is $value');
-        value = "I'm in trouble, plz help me. Reach this location:";
-        SharedPreferenceHelper.saveMessageHead(value);
-      }
-      setState(() {
-        _messageHead = value;
-      });
-      _messageHeadController = TextEditingController(text: _messageHead);
-    });
 
-    SharedPreferenceHelper.getSOSdelayTime().then((value) async {
-      if (value != null) {
-        print('SOSdelayTime is $value');
-      } else {
-        print('SOSdelayTime is $value');
-        value = 10;
-        SharedPreferenceHelper.saveSOSdelayTime(value);
-      }
-      setState(() {
-        _sosDelayTime = value;
-      });
-      _sosDelayTimeController = TextEditingController(text: _sosDelayTime.toString());
+    SmsMethods.initializeMessageHead().then((value) {
+      setState(() => _messageHead = value);
+      _messageHeadController = TextEditingController(text: value);
     });
-
-    SharedPreferenceHelper.getSOSrepeatInterval().then((value) async {
-      if (value != null) {
-        print('SOS repeat interval is $value');
-      } else {
-        print('SOS repeat interval is $value');
-        value = 120;
-        SharedPreferenceHelper.saveSOSrepeatInterval(value);
-      }
-      setState(() {
-        _sosRepeatInterval = value;
-      });
-      _sosRepeatIntervalController = TextEditingController(text: _sosRepeatInterval.toString());
+    SmsMethods.initializeSOSdelayTime().then((value) {
+      setState(() => _sosDelayTime = value);
+      _sosDelayTimeController = TextEditingController(text: value.toString());
+    });
+    SmsMethods.initializeSOSrepeatInterval().then((value) {
+      setState(() => _sosRepeatInterval = value);
+      _sosRepeatIntervalController = TextEditingController(text: value.toString());
     });
   }
 
@@ -127,15 +113,12 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Settings",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("Settings", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(24),
+          margin: const EdgeInsets.all(24),
           child: Form(
             key: _formKey,
             child: Column(
@@ -144,18 +127,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildMessageHead(),
                 _buildSOSdelayTime(),
                 // _buildSOStimeInterval(),
-                SizedBox(height: 100),
+                const SizedBox(height: 100),
                 ElevatedButton(
-                  child: Text(
+                  child: const Text(
                     'Save Changes',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   onPressed: () {
-                    if (!_formKey.currentState.validate()) {
-                      return;
-                    }
-
-                    _formKey.currentState.save();
+                    if (!_formKey.currentState!.validate()) return;
+                    _formKey.currentState!.save();
 
                     SharedPreferenceHelper.saveMessageHead(_messageHead);
                     SharedPreferenceHelper.saveSOSdelayTime(_sosDelayTime);
