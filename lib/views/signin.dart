@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:women_safety_app/services/auth.dart';
+import 'package:women_safety_app/services/auth_methods.dart';
 import 'package:women_safety_app/views/home/home.dart';
 
 class SignIn extends StatefulWidget {

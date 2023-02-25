@@ -22,9 +22,12 @@ class AuthMethods {
       final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
       if (googleSignInAccount == null) throw Exception("Sign in process was aborted.");
 
-      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.credential(idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken);
 
       UserCredential result = await _auth.signInWithCredential(credential);
 
@@ -34,7 +37,9 @@ class AuthMethods {
         log("No user found");
       } else {
         //save user info and then navigate to Home screen
-        final email = userDetails.email, name = userDetails.displayName, photoURL = userDetails.photoURL;
+        final email = userDetails.email,
+            name = userDetails.displayName,
+            photoURL = userDetails.photoURL;
         SharedPreferenceHelper.saveUserLoggedInStatus(true);
         SharedPreferenceHelper.saveUserUIDKey(userDetails.uid);
         if (email != null) SharedPreferenceHelper.saveUserEmailKey(email);
