@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:women_safety_app/components/app_drawer.dart";
-import "package:women_safety_app/components/consent_popup.dart";
+import 'package:women_safety_app/components/permission_manager/permission_manager.dart';
 // import "package:women_safety_app/services/notification_controller.dart";
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -33,115 +33,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // DatabaseHelper databaseHelper = DatabaseHelper();
 
-  // bool notificationsAllowed = false;
-
-  final isPermsGranted = false;
-
-  void getPermission() async {
-    // await Permission.contacts.request();
-    // await SOSMethods.getLocationPermission();
-    // await SOSMethods.getSMSPermission();
-  }
-
-  Future<void> showPermsConsent() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const ConsentPopup();
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
-
-    if (!isPermsGranted) Future.delayed(Duration.zero, () => showPermsConsent());
-
-    // Prepare elements for drawer widget
-
-    // Ensure Notifications are Allowed
-
-    // AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-    //   notificationsAllowed = isAllowed;
-
-    //   if (!isAllowed) {
-    //     // requestUserPermission(isAllowed);
-    //     AwesomeNotifications().requestPermissionToSendNotifications();
-    //   } else {
-    //     // log('Notifications are allowed');
-    //   }
-    // });
-
-    // AwesomeNotifications().setListeners(
-    //   onActionReceivedMethod: (ReceivedAction receivedAction) {
-    //     return NotificationController.onActionReceivedMethod(context, receivedAction);
-    //   },
-    //   onNotificationCreatedMethod: (ReceivedNotification receivedNotification) {
-    //     return NotificationController.onNotificationCreatedMethod(context, receivedNotification);
-    //   },
-    //   onNotificationDisplayedMethod: (ReceivedNotification receivedNotification) {
-    //     return NotificationController.onNotificationDisplayedMethod(context, receivedNotification);
-    //   },
-    //   onDismissActionReceivedMethod: (ReceivedAction receivedAction) {
-    //     return NotificationController.onDismissActionReceivedMethod(context, receivedAction);
-    //   },
-    // );
     // Update SOS Shared Prefs
     SmsMethods.initializeAllSmsPrefs();
-
-    getPermission();
   }
-
-  // void requestUserPermission(bool isAllowed) async {
-  //   showDialog(
-  //     context: context,
-  //     builder: (_) => NetworkGiffyDialog(
-  //       buttonOkText: const Text(
-  //         'Allow',
-  //         style: TextStyle(color: Colors.white),
-  //       ),
-  //       buttonCancelText: const Text(
-  //         'Later',
-  //         style: TextStyle(color: Colors.white),
-  //       ),
-  //       buttonCancelColor: Colors.grey,
-  //       buttonOkColor: Colors.deepPurple,
-  //       buttonRadius: 0.0,
-  //       image: Image.asset("assets/images/animated-bell.gif", fit: BoxFit.cover),
-  //       title: const Text(
-  //         'Get Notified!',
-  //         textAlign: TextAlign.center,
-  //         style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-  //       ),
-  //       description: const Text(
-  //         'Allow Awesome Notifications to send you beautiful notifications!',
-  //         textAlign: TextAlign.center,
-  //       ),
-  //       entryAnimation: EntryAnimation.DEFAULT,
-  //       onCancelButtonPressed: () async {
-  //         Navigator.of(context).pop();
-  //         notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
-  //         setState(
-  //           () {
-  //             notificationsAllowed = notificationsAllowed;
-  //           },
-  //         );
-  //       },
-  //       onOkButtonPressed: () async {
-  //         Navigator.of(context).pop();
-  //         await AwesomeNotifications().requestPermissionToSendNotifications();
-  //         notificationsAllowed = await AwesomeNotifications().isNotificationAllowed();
-  //         setState(
-  //           () {
-  //             notificationsAllowed = notificationsAllowed;
-  //           },
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +74,8 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          BottomContent(key: UniqueKey())
+          BottomContent(key: UniqueKey()),
+          PermissionManager(key: UniqueKey()),
         ],
       ),
     );
