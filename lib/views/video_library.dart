@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class VideoLib extends StatefulWidget {
+  const VideoLib({super.key});
+
   @override
-  _VideoLibState createState() => _VideoLibState();
+  State<VideoLib> createState() => _VideoLibState();
 }
 
 class _VideoLibState extends State<VideoLib> {
@@ -11,17 +13,15 @@ class _VideoLibState extends State<VideoLib> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Self Defence and Awareness",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
       ),
-      body: Container(
-        child: Text(
-          "This Screen is under development",
-          textAlign: TextAlign.center,
-        ),
+      body: const Text(
+        "This Screen is under development",
+        textAlign: TextAlign.center,
       ),
     );
   }

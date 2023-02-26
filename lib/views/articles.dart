@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Articles extends StatefulWidget {
+  const Articles({super.key});
+
   @override
-  _ArticlesState createState() => _ArticlesState();
+  State<Articles> createState() => _ArticlesState();
 }
 
 class _ArticlesState extends State<Articles> {
@@ -11,17 +13,15 @@ class _ArticlesState extends State<Articles> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Women Safety Laws",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
       ),
-      body: Container(
-        child: Text(
-          "This Screen is under development",
-          textAlign: TextAlign.center,
-        ),
+      body: const Text(
+        "This Screen is under development",
+        textAlign: TextAlign.center,
       ),
     );
   }
