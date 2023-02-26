@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:telephony/telephony.dart';
-import 'package:women_safety_app/helper_functions/database_helper.dart';
+import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/contacts.dart';
 
@@ -20,7 +20,8 @@ class SOSMethods {
       String address = positionDetials.address;
 
       String messageHead = await SharedPreferenceHelper.getMessageHead();
-      String messageBody = "https://www.google.com/maps/search/?api=1&query=$latitude%2C$longitude. $address";
+      String messageBody =
+          "https://www.google.com/maps/search/?api=1&query=$latitude%2C$longitude. $address";
 
       final message = messageHead + messageBody;
       await _initiateSendSMS(message);
@@ -46,7 +47,9 @@ class SOSMethods {
     }
 
     if (!serviceEnabled) {
-      Fluttertoast.showToast(msg: 'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
+      Fluttertoast.showToast(
+          msg:
+              'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
       return false;
     } else {
       return true;
@@ -71,7 +74,8 @@ class SOSMethods {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      Fluttertoast.showToast(msg: 'Location permissions are permanently denied, App cannot request permissions.');
+      Fluttertoast.showToast(
+          msg: 'Location permissions are permanently denied, App cannot request permissions.');
     }
 
     if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
@@ -85,14 +89,17 @@ class SOSMethods {
     // check if location service is enabled using getLocationPermission()
     bool locationPermission = await getLocationPermission();
     if (!locationPermission) {
-      Fluttertoast.showToast(msg: 'Location Service is not enabled. SOS Failed. Please enable Location Service in your phone settings.');
+      Fluttertoast.showToast(
+          msg:
+              'Location Service is not enabled. SOS Failed. Please enable Location Service in your phone settings.');
       return null;
     }
 
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
 
       Placemark place = placemarks[0];
 
@@ -119,7 +126,7 @@ class SOSMethods {
   }
 
   static Future<bool> _initiateSendSMS(String message) async {
-    DatabaseHelper databaseHelper = DatabaseHelper();
+    DatabaseMethods databaseHelper = DatabaseMethods();
     List<TContact> contactList = await databaseHelper.getContactList();
     String recipients = "";
     int i = 1;
@@ -148,7 +155,9 @@ class SOSMethods {
     }
 
     if (!serviceEnabled) {
-      Fluttertoast.showToast(msg: 'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
+      Fluttertoast.showToast(
+          msg:
+              'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
       return false;
     } else {
       // bool canSendSms = await telephony.isSmsCapable;

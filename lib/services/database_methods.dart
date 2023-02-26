@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:women_safety_app/services/contacts.dart';
 
-class DatabaseHelper {
+class DatabaseMethods {
   String contactTable = 'contact_table';
   String colId = 'id';
   String colContactName = 'name';
@@ -9,18 +9,18 @@ class DatabaseHelper {
 
   // named private constructor..(used to create an instance of a singleton class)
   // it will be used to create an instance of the DatabaseHelper class
-  DatabaseHelper._createInstance();
+  DatabaseMethods._createInstance();
 
   //Now lets create an instance of the database
-  static DatabaseHelper _databaseHelper; // this _databaseHelper will
+  static DatabaseMethods _databaseHelper; // this _databaseHelper will
   //be referenced using 'this' keyword. It helps to access getters and
   //setters of the class. for example: _database getter is used when we
   //want to initialize the db.
-  factory DatabaseHelper() {
+  factory DatabaseMethods() {
     //factory keyword allows the constructor to return some value
     if (_databaseHelper == null) {
       //create an instance of _DatabaseHelper iff there is no instance created before
-      _databaseHelper = DatabaseHelper._createInstance();
+      _databaseHelper = DatabaseMethods._createInstance();
       //because of that null check this line above runs once only
     }
     return _databaseHelper;
@@ -44,13 +44,15 @@ class DatabaseHelper {
   }
 
   void _createDbTable(Database db, int newVersion) async {
-    await db.execute('CREATE TABLE $contactTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colContactName TEXT, $colContactNumber TEXT)');
+    await db.execute(
+        'CREATE TABLE $contactTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colContactName TEXT, $colContactNumber TEXT)');
   }
 
   // Fetch Operation: get contact object from db
   Future<List<Map<String, dynamic>>> getContactMapList() async {
     Database db = await this.database;
-    List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM $contactTable order by $colId ASC');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT * FROM $contactTable order by $colId ASC');
 
     // or
     // var result = await db.query(contactTable, orderBy: '$colId ASC');

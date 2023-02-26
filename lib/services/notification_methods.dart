@@ -29,9 +29,7 @@
 //                 id: id,
 //                 channelKey: 'progress_bar',
 //                 title: 'Initiate SOS',
-//                 payload: {
-//                   'finished': 'true'
-//                 },
+//                 payload: {'finished': 'true'},
 //                 autoDismissible: false,
 //                 notificationLayout: NotificationLayout.ProgressBar,
 //                 progress: null,
@@ -62,9 +60,7 @@
 //                 id: id,
 //                 channelKey: 'progress_bar',
 //                 title: 'Initiate SOS',
-//                 payload: {
-//                   'finished': 'true'
-//                 },
+//                 payload: {'finished': 'true'},
 //                 autoDismissible: false,
 //                 notificationLayout: NotificationLayout.ProgressBar,
 //                 progress: null,
@@ -93,9 +89,7 @@
 //                 id: id,
 //                 channelKey: 'progress_bar',
 //                 title: 'SOS is initiating in ${maxStep - simulatedStep} seconds',
-//                 payload: {
-//                   'finished': 'false'
-//                 },
+//                 payload: {'finished': 'false'},
 //                 notificationLayout: NotificationLayout.ProgressBar,
 //                 progress: min((simulatedStep / maxStep * 100).round(), 100),
 //                 autoDismissible: false,
@@ -130,9 +124,7 @@
 //         id: id,
 //         channelKey: 'progress_bar',
 //         title: 'Initiate SOS',
-//         payload: {
-//           'finished': 'true'
-//         },
+//         payload: {'finished': 'true'},
 //         autoDismissible: false,
 //         notificationLayout: NotificationLayout.ProgressBar,
 //         progress: null,
