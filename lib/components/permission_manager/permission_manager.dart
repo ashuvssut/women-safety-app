@@ -9,37 +9,12 @@ class PermissionManager extends StatefulWidget {
   State<PermissionManager> createState() => _PermissionManagerState();
 }
 
+// TODO: Implement isRestricted for SMS, Location & Contacts
 class _PermissionManagerState extends State<PermissionManager> {
   bool hasNotificationsPerms = false;
   bool hasSmsPerms = false;
   bool hasLocPerms = false;
   bool hasContactsPerms = false;
-
-  void notificationPermsHandler(bool isAllowed) {
-    setState(() => hasNotificationsPerms = isAllowed);
-    if (isAllowed) {
-      log('Notification permission granted');
-      NotificationPerms.setListeners(context);
-    } else {
-      Future.delayed(Duration.zero, () => showPermsConsent());
-      log('Notification permission denied');
-    }
-  }
-
-  void getPermission() async {
-    // await Permission.contacts.request();
-    if (!hasNotificationsPerms) {
-      await NotificationPerms.request() //
-          .then((isAllowed) => notificationPermsHandler(isAllowed));
-    }
-
-    if (!hasSmsPerms) {
-      // await SOSMethods.getSMSPermission();
-    }
-
-    // await SOSMethods.getLocationPermission();
-    // await SOSMethods.getSMSPermission();
-  }
 
   Future<void> showPermsConsent() async {
     return showDialog<void>(
@@ -57,15 +32,91 @@ class _PermissionManagerState extends State<PermissionManager> {
     );
   }
 
+  void notificationPermsHandler(bool isAllowed) {
+    setState(() => hasNotificationsPerms = isAllowed);
+    if (isAllowed) {
+      log('Notification permission granted');
+      NotificationPerms.setListeners(context);
+    } else {
+      Future.delayed(Duration.zero, () => showPermsConsent());
+      log('Notification permission denied');
+    }
+  }
+
+  void smsPermsHandler(PermissionStatus status) {
+    setState(() => hasSmsPerms = status.isGranted);
+    if (status.isGranted) {
+      log('SMS permission granted');
+    } else if (status.isDenied) {
+      Future.delayed(Duration.zero, () => showPermsConsent());
+      log('SMS permission denied');
+    } else if (status.isPermanentlyDenied) {
+      log('SMS permission permanently denied');
+      SMSPerms.handlePermanentlyDenied(context);
+    } // else if (status.isRestricted) {}
+  }
+
+  void locPermsHandler(PermissionStatus status) {
+    setState(() => hasLocPerms = status.isGranted);
+    if (status.isGranted) {
+      log('Location permission granted');
+    } else if (status.isDenied) {
+      Future.delayed(Duration.zero, () => showPermsConsent());
+      log('Location permission denied');
+    } else if (status.isPermanentlyDenied) {
+      log('Location permission permanently denied');
+      GeolocationPerms.handlePermanentlyDenied(context);
+    } // else if (status.isRestricted) {}
+  }
+
+  void contactsPermsHandler(PermissionStatus status) {
+    setState(() => hasContactsPerms = status.isGranted);
+    if (status.isGranted) {
+      log('Contacts permission granted');
+    } else if (status.isDenied) {
+      Future.delayed(Duration.zero, () => showPermsConsent());
+      log('Contacts permission denied');
+    } else if (status.isPermanentlyDenied) {
+      log('Contacts permission permanently denied');
+      ContactsPerms.handlePermanentlyDenied(context);
+    } // else if (status.isRestricted) {}
+  }
+
+  void getPermission() async {
+    if (!hasContactsPerms) {
+      await ContactsPerms.request() //
+          .then((status) => contactsPermsHandler(status));
+    }
+    if (!hasNotificationsPerms) {
+      await NotificationPerms.request() //
+          .then((isAllowed) => notificationPermsHandler(isAllowed));
+    }
+    if (!hasLocPerms) {
+      await GeolocationPerms.request() //
+          .then((status) => locPermsHandler(status));
+    }
+    if (!hasSmsPerms) {
+      await SMSPerms.request() //
+          .then((status) => smsPermsHandler(status));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
+    ContactsPerms.check().then((status) {
+      contactsPermsHandler(status);
+    });
     NotificationPerms.check().then((isAllowed) {
       notificationPermsHandler(isAllowed);
     });
-
-    // if (!hasNotificationsPerms || !hasSmsPerms || !hasLocPerms || !hasContactsPerms) {
+    SMSPerms.check().then((status) {
+      smsPermsHandler(status);
+    });
+    GeolocationPerms.check().then((status) {
+      locPermsHandler(status);
+    });
   }
 
   @override
