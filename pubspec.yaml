@@ -29,6 +29,7 @@ dependencies:
   firebase_core: ^2.7.0
   flutter:
     sdk: flutter
+  flutter_isolate: ^2.0.4
   flutter_svg: ^2.0.2
   fluttertoast: ^8.2.1
   geocoding: ^2.0.5
