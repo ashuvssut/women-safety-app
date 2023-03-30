@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'permissions.dart';
 
 class PermissionManager extends StatefulWidget {
@@ -52,11 +53,12 @@ class _PermissionManagerState extends State<PermissionManager> {
       log('SMS permission denied');
     } else if (status.isPermanentlyDenied) {
       log('SMS permission permanently denied');
+      Fluttertoast.showToast(msg: SMSPerms.permanentDeniedFeedback);
       SMSPerms.handlePermanentlyDenied(context);
     } // else if (status.isRestricted) {}
   }
 
-  void locPermsHandler(PermissionStatus status) {
+  void locationPermsHandler(PermissionStatus status) {
     setState(() => hasLocPerms = status.isGranted);
     if (status.isGranted) {
       log('Location permission granted');
@@ -64,6 +66,7 @@ class _PermissionManagerState extends State<PermissionManager> {
       Future.delayed(Duration.zero, () => showPermsConsent());
       log('Location permission denied');
     } else if (status.isPermanentlyDenied) {
+      Fluttertoast.showToast(msg: GeolocationPerms.permanentDeniedFeedback);
       log('Location permission permanently denied');
       GeolocationPerms.handlePermanentlyDenied(context);
     } // else if (status.isRestricted) {}
@@ -77,6 +80,7 @@ class _PermissionManagerState extends State<PermissionManager> {
       Future.delayed(Duration.zero, () => showPermsConsent());
       log('Contacts permission denied');
     } else if (status.isPermanentlyDenied) {
+      Fluttertoast.showToast(msg: ContactsPerms.permanentDeniedFeedback);
       log('Contacts permission permanently denied');
       ContactsPerms.handlePermanentlyDenied(context);
     } // else if (status.isRestricted) {}
@@ -93,7 +97,7 @@ class _PermissionManagerState extends State<PermissionManager> {
     }
     if (!hasLocPerms) {
       await GeolocationPerms.request() //
-          .then((status) => locPermsHandler(status));
+          .then((status) => locationPermsHandler(status));
     }
     if (!hasSmsPerms) {
       await SMSPerms.request() //
@@ -115,7 +119,7 @@ class _PermissionManagerState extends State<PermissionManager> {
       smsPermsHandler(status);
     });
     GeolocationPerms.check().then((status) {
-      locPermsHandler(status);
+      locationPermsHandler(status);
     });
   }
 
@@ -162,7 +166,7 @@ class ConsentPopup extends StatelessWidget {
                 ? const ListTile(
                     leading: Icon(Icons.location_on),
                     title: Text('Location'),
-                    subtitle: Text('To add your current location information in your SOS.'),
+                    subtitle: Text('To add your current location information in your SOS message.'),
                   )
                 : const SizedBox.shrink(),
             !hasContactsPerms
