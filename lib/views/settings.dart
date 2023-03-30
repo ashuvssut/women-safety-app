@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:women_safety_app/services/shared_preferences.dart';
-import 'package:women_safety_app/services/sms_methods.dart';
+import 'package:women_safety_app/services/sos_methods.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -11,9 +11,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String _messageHead = SmsMethods.messageHead;
-  int _sosDelayTime = SmsMethods.sosDelayTime;
-  int _sosRepeatInterval = SmsMethods.sosRepeatInterval;
+  String _messageHead = SosMethods.messageHead;
+  int _sosDelayTime = SosMethods.sosDelayTime;
+  int _sosRepeatInterval = SosMethods.sosRepeatInterval;
   TextEditingController? _messageHeadController;
   TextEditingController? _sosDelayTimeController;
   TextEditingController? _sosRepeatIntervalController;
@@ -30,7 +30,7 @@ class _SettingsState extends State<Settings> {
         return null;
       },
       onSaved: (value) async {
-        if (value == null || value.isEmpty) value = SmsMethods.messageHead;
+        if (value == null || value.isEmpty) value = SosMethods.messageHead;
         _messageHead = value;
         await SharedPreferenceHelper.saveMessageHead(value);
       },
@@ -54,8 +54,8 @@ class _SettingsState extends State<Settings> {
         if (val == null || val <= 0) {
           Fluttertoast.showToast(
               msg:
-                  'Invalid SOS delay time, setting to default value ${SmsMethods.sosDelayTime} seconds');
-          val = SmsMethods.sosDelayTime;
+                  'Invalid SOS delay time, setting to default value ${SosMethods.sosDelayTime} seconds');
+          val = SosMethods.sosDelayTime;
         }
         _sosDelayTime = val;
         await SharedPreferenceHelper.saveSOSdelayTime(_sosDelayTime);
@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Widget _buildSOStimeInterval() {
+  Widget _buildSosTimeInterval() {
     return TextFormField(
       decoration: const InputDecoration(labelText: 'SOS time Interval (seconds)'),
       keyboardType: TextInputType.number,
@@ -80,9 +80,9 @@ class _SettingsState extends State<Settings> {
         if (val == null || val <= 0) {
           Fluttertoast.showToast(
             msg:
-                'Invalid SOS time Interval, setting to default value ${SmsMethods.sosRepeatInterval} seconds',
+                'Invalid SOS time Interval, setting to default value ${SosMethods.sosRepeatInterval} seconds',
           );
-          val = SmsMethods.sosRepeatInterval;
+          val = SosMethods.sosRepeatInterval;
         }
         _sosRepeatInterval = val;
         await SharedPreferenceHelper.saveSOSrepeatInterval(_sosRepeatInterval);
@@ -94,15 +94,15 @@ class _SettingsState extends State<Settings> {
   void initState() {
     super.initState();
 
-    SmsMethods.initializeMessageHead().then((value) {
+    SosMethods.initializeMessageHead().then((value) {
       setState(() => _messageHead = value);
       _messageHeadController = TextEditingController(text: value);
     });
-    SmsMethods.initializeSOSdelayTime().then((value) {
+    SosMethods.initializeSosDelayTime().then((value) {
       setState(() => _sosDelayTime = value);
       _sosDelayTimeController = TextEditingController(text: value.toString());
     });
-    SmsMethods.initializeSOSrepeatInterval().then((value) {
+    SosMethods.initializeSosRepeatInterval().then((value) {
       setState(() => _sosRepeatInterval = value);
       _sosRepeatIntervalController = TextEditingController(text: value.toString());
     });
