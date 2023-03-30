@@ -1,11 +1,22 @@
 # Withyou - Women safety app 
 
 An App that can **send current location of the user** to her *trusted list* of contacts when in danger with just one tap **via SMS**.
+This project was a created on Google DSC WoW Hackathon'21
 
-### checkout the alpha release and report issues you find!
+### Checkout the alpha release and report issues you find!
 
 An app dedicated towards woman safety. Keeping in view about the increasing cases of threats on women.
 Currently this app is compatible with Android only.
+
+### Find it on
+<a href="https://play.google.com/store/apps/details?id=com.ashuvssut.women_safety_app">
+<img alt="Get it on Google Play" height="80"        src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0" />
+</a>
+<details>
+<summary>hazukashidana🙂</summary>
+<br>
+It's a hackathon project. It may look crappy. But `dev` branch has some W.I.P code that will make the app look awesome.
+</details>
 
 ### Screenshots
 
