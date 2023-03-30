@@ -1,15 +1,15 @@
 class TContact {
-  int _id;
-  String _number;
-  String _name;
+  late int _id;
+  late String _number;
+  late String _name;
 
   TContact(this._number, this._name);
   TContact.withId(this._id, this._number, this._name);
 
   //getters
-  int get id => _id;
-  String get number => _number;
-  String get name => _name;
+  int? get id => _id;
+  String get getNumber => _number;
+  String get getName => _name;
 
   @override
   String toString() {
@@ -17,24 +17,24 @@ class TContact {
   }
 
   //setters
-  set number(String newNumber) => this._number = newNumber;
-  set name(String newName) => this._name = newName;
+  set number(String newNumber) => _number = newNumber;
+  set name(String newName) => _name = newName;
 
   //convert a Contact object to a Map object
   Map<String, dynamic> toMap() {
-    var map = new Map<String, dynamic>();
+    Map<String, dynamic> map = {};
 
-    map['id'] = this._id;
-    map['number'] = this._number;
-    map['name'] = this._name;
+    map['id'] = _id;
+    map['number'] = _number;
+    map['name'] = _name;
 
     return map;
   }
 
   //Extract a Contact Object from a Map object
   TContact.fromMapObject(Map<String, dynamic> map) {
-    this._id = map['id'];
-    this._number = map['number'];
-    this._name = map['name'];
+    _id = map['id'];
+    _number = map['number'];
+    _name = map['name'];
   }
 }

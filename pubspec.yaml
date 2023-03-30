@@ -33,6 +33,10 @@ dependencies:
   google_sign_in: ^6.0.1
   flutter_svg: ^2.0.2
   permission_handler: ^10.2.0
+  sqflite: ^2.2.5
+  geocoding: ^2.0.5
+  telephony: ^0.2.0
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

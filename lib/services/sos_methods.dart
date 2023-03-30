@@ -4,55 +4,68 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:telephony/telephony.dart';
+import 'package:women_safety_app/components/permission_manager/permissions/sms.dart';
 import 'package:women_safety_app/services/database_methods.dart';
-import 'package:women_safety_app/helper_functions/shared_preference.dart';
 import 'package:women_safety_app/services/contacts.dart';
+import 'package:women_safety_app/services/shared_preferences.dart';
 
-class SOSMethods {
-  static sendSOS() async {
-    log('SOS Triggered');
+class SosMethods {
+  static const String messageHead = "I'm in trouble, plz help me. Reach this location:";
+  static const int sosDelayTime = 10;
+  static const int sosRepeatInterval = 10;
 
-    PositionDetails positionDetials = await _determinePosition();
+  // initializeAll method
+  static Future<void> initializeAllSosPrefs() async {
+    await initializeMessageHead();
+    await initializeSosDelayTime();
+    await initializeSosRepeatInterval();
+  }
+
+  static Future<String> initializeMessageHead() async {
+    return SharedPreferenceHelper.getMessageHead().then((value) async {
+      String msg = value ?? messageHead;
+      SharedPreferenceHelper.saveMessageHead(msg);
+      return msg;
+    });
+  }
+
+  static Future<int> initializeSosDelayTime() async {
+    return SharedPreferenceHelper.getSOSdelayTime().then((value) async {
+      int delayTime = value ?? sosDelayTime;
+      SharedPreferenceHelper.saveSOSdelayTime(delayTime);
+      return delayTime;
+    });
+  }
+
+  static Future<int> initializeSosRepeatInterval() async {
+    return SharedPreferenceHelper.getSOSrepeatInterval().then((value) async {
+      int interval = value ?? sosRepeatInterval;
+      SharedPreferenceHelper.saveSOSrepeatInterval(interval);
+      return interval;
+    });
+  }
+
+  static sendSos() async {
+    log('Sos Triggered');
+
+    PositionDetails? positionDetials = await _determinePosition();
 
     if (positionDetials != null) {
-      final latitude = positionDetials.position.latitude;
-      final longitude = positionDetials.position.longitude;
-      String address = positionDetials.address;
+      final latitude = positionDetials.getPosition.latitude;
+      final longitude = positionDetials.getPosition.longitude;
+      String address = positionDetials.getAddress;
 
-      String messageHead = await SharedPreferenceHelper.getMessageHead();
       String messageBody =
           "https://www.google.com/maps/search/?api=1&query=$latitude%2C$longitude. $address";
 
       final message = messageHead + messageBody;
-      await _initiateSendSMS(message);
 
-      // bool result = await _initiateSendSMS(message);
-      // if (result) {
-      //   Fluttertoast.showToast(msg: 'SOS Sent!');
-      // } else {
-      //   Fluttertoast.showToast(msg: 'Sending SOS SMS Failed!');
-      // }
-    }
-  }
-
-  static Future<bool> getSMSPermission() async {
-    final Telephony telephony = Telephony.instance;
-
-    bool serviceEnabled;
-
-    serviceEnabled = await telephony.requestSmsPermissions;
-    if (!serviceEnabled) {
-      Fluttertoast.showToast(msg: 'Please allow SMS Permission');
-      serviceEnabled = await telephony.requestSmsPermissions;
-    }
-
-    if (!serviceEnabled) {
-      Fluttertoast.showToast(
-          msg:
-              'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
-      return false;
-    } else {
-      return true;
+      bool result = await _initiateSendSos(message);
+      if (result) {
+        Fluttertoast.showToast(msg: 'SOS Sent!');
+      } else {
+        Fluttertoast.showToast(msg: 'Some Error Occured. Sending SOS SMS Failed!');
+      }
     }
   }
 
@@ -85,10 +98,11 @@ class SOSMethods {
     }
   }
 
-  static Future<PositionDetails> _determinePosition() async {
+  static Future<PositionDetails?> _determinePosition() async {
     // check if location service is enabled using getLocationPermission()
     bool locationPermission = await getLocationPermission();
     if (!locationPermission) {
+      // TODO: graciously handle this
       Fluttertoast.showToast(
           msg:
               'Location Service is not enabled. SOS Failed. Please enable Location Service in your phone settings.');
@@ -109,29 +123,22 @@ class SOSMethods {
       PositionDetails positionDetails = PositionDetails(currentPosition, currentAddress);
       return positionDetails;
     } catch (e) {
-      print(e);
+      log(e.toString());
 
-      if (position.latitude != null) {
-        // if only geocoding has failed
-        Fluttertoast.showToast(msg: 'Oops! Apps could not fetch Address.');
+      Fluttertoast.showToast(msg: 'Oops! Apps could not fetch Address.');
 
-        PositionDetails positionDetails = PositionDetails(position, "");
-        return positionDetails;
-      } else {
-        Fluttertoast.showToast(msg: 'Sorry! Geolocation could not be fetched. SOS Failed.');
-        //if both geolocator and geocoding failed
-        return null;
-      }
+      PositionDetails positionDetails = PositionDetails(position, "");
+      return positionDetails;
     }
   }
 
-  static Future<bool> _initiateSendSMS(String message) async {
-    DatabaseMethods databaseHelper = DatabaseMethods();
-    List<TContact> contactList = await databaseHelper.getContactList();
+  static Future<bool> _initiateSendSos(String message) async {
+    DatabaseMethods databaseMethods = DatabaseMethods();
+    List<TContact> contactList = await databaseMethods.getContactList();
     String recipients = "";
     int i = 1;
     for (TContact contact in contactList) {
-      recipients += contact.number;
+      recipients += contact.getNumber;
       if (i != contactList.length) {
         recipients += ";";
         i++;
@@ -146,18 +153,11 @@ class SOSMethods {
   static Future<bool> sendSMS2Recipients(String recipients, String message) async {
     final Telephony telephony = Telephony.instance;
 
-    bool serviceEnabled;
-
-    serviceEnabled = await telephony.requestSmsPermissions;
-    if (!serviceEnabled) {
-      Fluttertoast.showToast(msg: 'Please allow SMS Permission');
-      serviceEnabled = await telephony.requestSmsPermissions;
-    }
+    bool serviceEnabled = await SMSPerms.isGranted();
 
     if (!serviceEnabled) {
-      Fluttertoast.showToast(
-          msg:
-              'SMS Permission is not being granted. App will be unable to send SOS SMS to your added trusted contacts');
+      // TODO: graciously handle this
+      Fluttertoast.showToast(msg: SMSPerms.permanentDeniedFeedback);
       return false;
     } else {
       // bool canSendSms = await telephony.isSmsCapable;
@@ -165,17 +165,18 @@ class SOSMethods {
       // SimState simState = await telephony.simState;
       // print(simState);
 
-      final SmsSendStatusListener listener = (SendStatus status) {
+      listener(SendStatus status) {
         if (status == SendStatus.SENT || status == SendStatus.DELIVERED) {
-          print(status);
+          log(status.toString());
           log('SmsSendStatusListener report: SMS was sent!');
           Fluttertoast.showToast(msg: 'SOS Sent!');
         } else {
-          print(status);
+          log(status.toString());
           log('SmsSendStatusListener report: SMS was not sent!');
           Fluttertoast.showToast(msg: 'Sending SOS SMS Failed!');
         }
-      };
+      }
+
       List<String> recipientList = recipients.split(';');
 
       for (String recipient in recipientList) {
@@ -208,8 +209,8 @@ class PositionDetails {
   PositionDetails(this._position, this._address);
 
   //getters
-  Position get position => _position;
-  String get address => _address;
+  Position get getPosition => _position;
+  String get getAddress => _address;
 
   @override
   String toString() {
@@ -217,6 +218,6 @@ class PositionDetails {
   }
 
   //setters
-  set positon(Position newPosition) => this._position = newPosition;
-  set address(String newAddress) => this._address = newAddress;
+  set positon(Position newPosition) => _position = newPosition;
+  set address(String newAddress) => _address = newAddress;
 }

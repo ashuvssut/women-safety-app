@@ -8,36 +8,30 @@ class DatabaseMethods {
   String colContactNumber = 'number';
 
   // named private constructor..(used to create an instance of a singleton class)
-  // it will be used to create an instance of the DatabaseHelper class
+  // it will be used to create an instance of the DatabaseMethods class
   DatabaseMethods._createInstance();
 
   //Now lets create an instance of the database
-  static DatabaseMethods _databaseHelper; // this _databaseHelper will
+  static DatabaseMethods? _databaseMethods; // this _databaseMethods will
   //be referenced using 'this' keyword. It helps to access getters and
   //setters of the class. for example: _database getter is used when we
   //want to initialize the db.
   factory DatabaseMethods() {
     //factory keyword allows the constructor to return some value
-    if (_databaseHelper == null) {
-      //create an instance of _DatabaseHelper iff there is no instance created before
-      _databaseHelper = DatabaseMethods._createInstance();
-      //because of that null check this line above runs once only
-    }
-    return _databaseHelper;
+    DatabaseMethods databaseMethods = _databaseMethods ?? DatabaseMethods._createInstance();
+    return databaseMethods;
   }
 
   // lets initialize the database
-  static Database _database;
+  static Database? _database;
   Future<Database> get database async {
-    if (_database == null) {
-      _database = await initializeDatabase();
-    }
-    return _database;
+    Database database = _database ?? await initializeDatabase();
+    return database;
   }
 
   Future<Database> initializeDatabase() async {
     String directoryPath = await getDatabasesPath();
-    String dbLocation = directoryPath + 'contact.db';
+    String dbLocation = '${directoryPath}contact.db';
 
     var contactDatabase = await openDatabase(dbLocation, version: 1, onCreate: _createDbTable);
     return contactDatabase;
@@ -50,7 +44,7 @@ class DatabaseMethods {
 
   // Fetch Operation: get contact object from db
   Future<List<Map<String, dynamic>>> getContactMapList() async {
-    Database db = await this.database;
+    Database db = await database;
     List<Map<String, dynamic>> result =
         await db.rawQuery('SELECT * FROM $contactTable order by $colId ASC');
 
@@ -61,7 +55,7 @@ class DatabaseMethods {
 
   //Insert a contact object
   Future<int> insertContact(TContact contact) async {
-    Database db = await this.database;
+    Database db = await database;
     var result = await db.insert(contactTable, contact.toMap());
     // print(await db.query(contactTable));
     return result;
@@ -76,7 +70,7 @@ class DatabaseMethods {
 
   //delete a contact object
   Future<int> deleteContact(int id) async {
-    Database db = await this.database;
+    Database db = await database;
     int result = await db.rawDelete('DELETE FROM $contactTable WHERE $colId = $id');
     // print(await db.query(contactTable));
     return result;
@@ -84,9 +78,9 @@ class DatabaseMethods {
 
   //get number of contact objects
   Future<int> getCount() async {
-    Database db = await this.database;
+    Database db = await database;
     List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $contactTable');
-    int result = Sqflite.firstIntValue(x);
+    int result = Sqflite.firstIntValue(x) ?? 0;
     return result;
   }
 
