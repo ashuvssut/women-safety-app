@@ -10,12 +10,14 @@ Currently this app is compatible with Android only.
 
 ### Find it on
 <a href="https://play.google.com/store/apps/details?id=com.ashuvssut.women_safety_app">
-<img alt="Get it on Google Play" height="80"        src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0" />
+<img alt="Get it on Google Play" height="80" src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0" />
 </a>
 <details>
 <summary>hazukashidana🙂</summary>
-<br>
-It's a hackathon project. It may look crappy. But `dev` branch has some W.I.P code that will make the app look awesome.
+<br/>
+It's a hackathon project. This app may not have a very beautiful UI but I gave it my best shot. 
+I gave flutter a try for the first time and it was a great experience. I learned a lot of new things and I am really happy with the result.
+(PS- I am a React Native developer to the core. I was just curious to try flutter.)
 </details>
 
 ### Screenshots
@@ -50,13 +52,13 @@ It's a hackathon project. It may look crappy. But `dev` branch has some W.I.P co
 
 
 
-## Development in Progress...
+## Development Plans
 
-- Release v0.1-alpha is all ready to use (SOS featue works fine). Articles screen and Video Library screens are not implemented. 
+- Current Release v1.0.0 is all ready to use (SOS featue works fine). It has a new polished UI and added major improvements in User Experience.
 
-- Release v0.2-alpha will bring on improvements and add those pending screens. (see Projects tab) 
+- Release v2.0.0 will bring on improvements and add Articles screen and Video Library screens (to be implemented). (see Projects tab) 
 
-- Contributions via PRs are appreaciated
+- Contributions via PRs are appreciated
 
 ## Project Explanation
 
@@ -65,9 +67,9 @@ We have created an app which includes the following
    - has navigations to other two screens.
    - has our main SOS feature (sending location sms to added trusted contacts)
 
-2. Youtube video fetching screen ( fetches self defence and safety awareness videos using YouTube Data API v3)
+2. (Pending) Youtube video fetching screen ( fetches self defence and safety awareness videos using YouTube Data API v3)
 
-3. Make screen/s showing all about IPC 1860 for women. It would e like an awareness documentation like stuff.
+3. (Pending) Make screen/s showing all about IPC 1860 for women. It would like an awareness documentation stuff.
 
 <!-- ## Getting Started
 
