@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:women_safety_app/components/app_drawer.dart";
 import 'package:women_safety_app/components/permission_manager/permission_manager.dart';
-import "package:women_safety_app/services/sos_methods.dart";
+import 'package:women_safety_app/services/sos_message_methods.dart';
 import "package:women_safety_app/views/settings.dart";
 import "top_banner.dart";
 import "bottom_content.dart";

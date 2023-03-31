@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:women_safety_app/services/shared_preferences.dart';
-import 'package:women_safety_app/services/sos_methods.dart';
+import 'package:women_safety_app/services/sos_message_methods.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
