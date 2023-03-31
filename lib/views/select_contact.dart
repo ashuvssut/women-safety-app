@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:women_safety_app/components/permission_manager/permissions.dart';
 import 'package:women_safety_app/services/contacts.dart';
 import 'package:women_safety_app/services/database_methods.dart';
 
@@ -15,7 +15,7 @@ class SelectContact extends StatefulWidget {
 }
 
 class _SelectContactState extends State<SelectContact> {
-  DatabaseMethods databaseHelper = DatabaseMethods();
+  DatabaseMethods databaseMethods = DatabaseMethods();
   List<Contact> contacts = [];
   List<Contact> contactsFiltered = [];
   Map<String, Color> contactsColorMap = {};
@@ -86,12 +86,14 @@ class _SelectContactState extends State<SelectContact> {
         if (nameMatches == true) return true;
         if (searchTermFlatten.isEmpty) return false;
 
-        Item? phone = contact.phones?.firstWhere((phn) {
+        final phones = contact.phones;
+        if (phones == null) return false;
+
+        phones.firstWhere((phn) {
           String phnFlattened = flattenPhoneNumber(phn.value ?? "");
           return phnFlattened.contains(searchTermFlatten);
         });
-
-        return phone != null;
+        return true;
       });
     }
     setState(() {
@@ -152,27 +154,6 @@ class _SelectContactState extends State<SelectContact> {
                               return "No phone number";
                             }
                           }()),
-                          // leading: (contact.avatar != null && contact.avatar.isNotEmpty)
-                          //     ? CircleAvatar(backgroundImage: MemoryImage(contact.avatar))
-                          //     : Container(
-                          //         decoration: BoxDecoration(
-                          //           shape: BoxShape.circle,
-                          //           gradient: LinearGradient(
-                          //             colors: [color1, color2],
-                          //             begin: Alignment.bottomLeft,
-                          //             end: Alignment.topRight,
-                          //           ),
-                          //         ),
-                          //         child: CircleAvatar(
-                          //           backgroundColor: Colors.transparent,
-                          //           child: Text(
-                          //             contact.initials(),
-                          //             style: const TextStyle(
-                          //               color: Colors.white,
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       ),
                           leading: () {
                             final avatar = contact.avatar;
                             if (avatar != null && avatar.isNotEmpty) {
@@ -226,18 +207,18 @@ class _SelectContactState extends State<SelectContact> {
     );
   }
 
-  void moveToLastScreen() {
+  void moveToLastScreen(bool success) {
     Navigator.pop(context, true);
   }
 
   void _addContact(TContact newContact) async {
-    int result = await databaseHelper.insertContact(newContact);
+    int result = await databaseMethods.insertContact(newContact);
     if (result != 0) {
       log('Contact added Successfully');
+      moveToLastScreen(true);
     } else {
       log('add Contact Failed');
       Fluttertoast.showToast(msg: "Failed to Add Contact");
     }
-    moveToLastScreen();
   }
 }

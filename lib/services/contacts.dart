@@ -1,5 +1,5 @@
 class TContact {
-  late int _id;
+  int? _id;
   late String _number;
   late String _name;
 
@@ -7,7 +7,7 @@ class TContact {
   TContact.withId(this._id, this._number, this._name);
 
   //getters
-  int get id => _id;
+  int? get id => _id;
   String get getNumber => _number;
   String get getName => _name;
 

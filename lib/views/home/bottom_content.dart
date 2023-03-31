@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/services/sos_notification_methods.dart';
+import 'package:women_safety_app/views/add_contact.dart';
 
 class BottomContent extends StatelessWidget {
   const BottomContent({Key? key}) : super(key: key);
@@ -70,10 +71,10 @@ class BottomContent extends StatelessWidget {
             padding: const EdgeInsets.only(top: 40.0, right: 60, left: 60),
             child: ElevatedButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => AddContacts()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddContacts()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,

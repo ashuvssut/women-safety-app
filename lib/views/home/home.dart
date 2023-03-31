@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:women_safety_app/components/app_drawer.dart";
 import 'package:women_safety_app/components/permission_manager/permission_manager.dart';
 import 'package:women_safety_app/services/sos_message_methods.dart';
+import "package:women_safety_app/services/sos_notification_methods.dart";
 import "package:women_safety_app/views/settings.dart";
 import "top_banner.dart";
 import "bottom_content.dart";
@@ -19,6 +20,11 @@ class _HomeState extends State<Home> {
     super.initState();
     // Update SOS Shared Prefs
     SosMethods.initializeAllSosPrefs();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // its like useEffect()
+      SosNotificationMethods.manageSosNotificationVisibility();
+    });
   }
 
   @override

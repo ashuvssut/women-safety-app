@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/services/contacts.dart';
+import 'package:women_safety_app/services/sos_notification_methods.dart';
 import 'package:women_safety_app/views/select_contact.dart';
 
 class AddContacts extends StatefulWidget {
@@ -14,7 +15,7 @@ class AddContacts extends StatefulWidget {
 }
 
 class _AddContactsState extends State<AddContacts> {
-  DatabaseMethods databaseHelper = DatabaseMethods();
+  DatabaseMethods databaseMethods = DatabaseMethods();
   List<TContact> contactList = [];
   int count = 0;
 
@@ -23,7 +24,7 @@ class _AddContactsState extends State<AddContacts> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //useEffect()
+      // its like useEffect()
       updateListView();
     });
   }
@@ -138,7 +139,7 @@ class _AddContactsState extends State<AddContacts> {
   }
 
   void navigateToSelectContact() async {
-    bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    bool? result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return const SelectContact();
     }));
 
@@ -148,7 +149,7 @@ class _AddContactsState extends State<AddContacts> {
   }
 
   void _deleteContact(BuildContext context, TContact contact) async {
-    int result = await databaseHelper.deleteContact(contact.id);
+    int result = await databaseMethods.deleteContact(contact.id!);
     if (result != 0) {
       log('Contact Removed Successfully');
       updateListView();
@@ -156,9 +157,9 @@ class _AddContactsState extends State<AddContacts> {
   }
 
   void updateListView() {
-    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    final Future<Database> dbFuture = databaseMethods.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<TContact>> contactListFuture = databaseHelper.getContactList();
+      Future<List<TContact>> contactListFuture = databaseMethods.getContactList();
       contactListFuture.then((contactList) {
         setState(() {
           this.contactList = contactList;
@@ -166,5 +167,6 @@ class _AddContactsState extends State<AddContacts> {
         });
       });
     });
+    SosNotificationMethods.manageSosNotificationVisibility();
   }
 }

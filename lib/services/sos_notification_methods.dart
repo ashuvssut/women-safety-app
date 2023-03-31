@@ -3,6 +3,7 @@ import 'dart:math' hide log;
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/services/shared_preferences.dart';
 import 'package:women_safety_app/services/sos_message_methods.dart';
 
@@ -126,6 +127,16 @@ class SosNotificationMethods {
     } else if (receivedAction.buttonKeyPressed == 'STOP') {
       //PRESSED CANCEL
       cancelProgressNotification();
+    }
+  }
+
+  static void manageSosNotificationVisibility() async {
+    final databaseMethods = DatabaseMethods();
+    int count = await databaseMethods.getCount();
+    if (count != 0) {
+      createSendSosNotification(1337);
+    } else {
+      removeNotification();
     }
   }
 }
