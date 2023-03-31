@@ -9,10 +9,6 @@ class ContactsPerms {
     return await Permission.contacts.status;
   }
 
-  static Future<bool> isGranted() async {
-    return await Permission.contacts.request().isGranted;
-  }
-
   static Future<PermissionStatus> request() async {
     return await Permission.contacts.request();
   }

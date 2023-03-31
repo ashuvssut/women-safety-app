@@ -9,10 +9,6 @@ class GeolocationPerms {
     return await Permission.location.status;
   }
 
-  static Future<bool> isGranted() async {
-    return await Permission.location.request().isGranted;
-  }
-
   static Future<PermissionStatus> request() async {
     return await Permission.location.request();
   }

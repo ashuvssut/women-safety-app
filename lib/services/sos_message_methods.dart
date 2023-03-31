@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:telephony/telephony.dart';
-import 'package:women_safety_app/components/permission_manager/permissions/sms.dart';
+import 'package:women_safety_app/components/permission_manager/permissions.dart';
 import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/services/contacts.dart';
 import 'package:women_safety_app/services/shared_preferences.dart';
@@ -153,7 +153,7 @@ class SosMethods {
   static Future<bool> sendSMS2Recipients(String recipients, String message) async {
     final Telephony telephony = Telephony.instance;
 
-    bool serviceEnabled = await SMSPerms.isGranted();
+    bool serviceEnabled = await SMSPerms.check().isGranted;
 
     if (!serviceEnabled) {
       // TODO: graciously handle this

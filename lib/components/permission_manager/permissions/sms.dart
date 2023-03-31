@@ -9,10 +9,6 @@ class SMSPerms {
     return await Permission.sms.status;
   }
 
-  static Future<bool> isGranted() async {
-    return await Permission.sms.request().isGranted;
-  }
-
   static Future<PermissionStatus> request() async {
     return await Permission.sms.request();
   }

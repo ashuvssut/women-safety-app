@@ -29,14 +29,14 @@ class _SelectContactState extends State<SelectContact> {
 
   getContactsPermissions() async {
     try {
-      if (!await Permission.contacts.isGranted) {
-        final isGranted = await Permission.contacts.request().isGranted;
+      if (!await ContactsPerms.check().isGranted) {
+        final isGranted = await ContactsPerms.request().isGranted;
         if (!isGranted) {
           Fluttertoast.showToast(msg: "Please grant contacts permission to continue");
           return;
         }
       }
-      if (await Permission.contacts.isGranted) {
+      if (await ContactsPerms.check().isGranted) {
         getAllContacts();
         searchController.addListener(() {
           filterContacts();
@@ -88,12 +88,13 @@ class _SelectContactState extends State<SelectContact> {
 
         final phones = contact.phones;
         if (phones == null) return false;
+        if (phones.isEmpty) return false;
 
-        phones.firstWhere((phn) {
+        final phone = phones.firstWhere((phn) {
           String phnFlattened = flattenPhoneNumber(phn.value ?? "");
           return phnFlattened.contains(searchTermFlatten);
-        });
-        return true;
+        }, orElse: () => Item(label: "", value: ""));
+        return !(phone.label == "" && phone.value == "");
       });
     }
     setState(() {
