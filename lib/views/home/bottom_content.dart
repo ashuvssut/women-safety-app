@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:women_safety_app/services/database_methods.dart';
+import 'package:women_safety_app/services/sos_notification_methods.dart';
 
 class BottomContent extends StatelessWidget {
   const BottomContent({Key? key}) : super(key: key);
@@ -41,14 +44,14 @@ class BottomContent extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () async {
-                // int count = await databaseHelper.getCount();
-
-                // if (count == 0) {
-                //   Fluttertoast.showToast(msg: 'Please Add Trusted contacts to send SOS.');
-                // } else {
-                //   Fluttertoast.showToast(msg: 'Sending SOS...');
-                //   NotificationMethods.showProgressNotification(1337);
-                // }
+                final databaseMethods = DatabaseMethods();
+                int count = await databaseMethods.getCount();
+                if (count == 0) {
+                  Fluttertoast.showToast(msg: 'Please Add Trusted contacts to send SOS.');
+                } else {
+                  Fluttertoast.showToast(msg: 'Sending SOS...');
+                  NotificationMethods.initiateSosProgressNotification(1337);
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 255, 123, 113),

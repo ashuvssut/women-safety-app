@@ -71,7 +71,7 @@ class NotificationMethods {
     );
   }
 
-  static Future<void> showProgressNotification(int id) async {
+  static Future<void> initiateSosProgressNotification(int id) async {
     int? sosDelayTime = await SharedPreferenceHelper.getSosDelayTime();
     if (sosDelayTime != null) {
       log('delay time is $sosDelayTime');
