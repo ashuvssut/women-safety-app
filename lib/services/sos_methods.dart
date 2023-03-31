@@ -30,17 +30,17 @@ class SosMethods {
   }
 
   static Future<int> initializeSosDelayTime() async {
-    return SharedPreferenceHelper.getSOSdelayTime().then((value) async {
+    return SharedPreferenceHelper.getSosDelayTime().then((value) async {
       int delayTime = value ?? sosDelayTime;
-      SharedPreferenceHelper.saveSOSdelayTime(delayTime);
+      SharedPreferenceHelper.saveSosDelayTime(delayTime);
       return delayTime;
     });
   }
 
   static Future<int> initializeSosRepeatInterval() async {
-    return SharedPreferenceHelper.getSOSrepeatInterval().then((value) async {
+    return SharedPreferenceHelper.getSosRepeatInterval().then((value) async {
       int interval = value ?? sosRepeatInterval;
-      SharedPreferenceHelper.saveSOSrepeatInterval(interval);
+      SharedPreferenceHelper.saveSosRepeatInterval(interval);
       return interval;
     });
   }

@@ -65,26 +65,26 @@ class SharedPreferenceHelper {
     return prefs.getString(userProfilePicKey);
   }
 
-  static Future<bool> saveSOSdelayTime(int newSOSdelayTime) async {
+  static Future<bool> saveSosDelayTime(int newSosDelayTime) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool result = await prefs.setInt(sosDelayTime, newSOSdelayTime);
-    log(await getSOSdelayTime().then((value) => value.toString()));
+    bool result = await prefs.setInt(sosDelayTime, newSosDelayTime);
+    log(await getSosDelayTime().then((value) => value.toString()));
     return result;
   }
 
-  static Future<int?> getSOSdelayTime() async {
+  static Future<int?> getSosDelayTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(sosDelayTime);
   }
 
-  static Future<bool> saveSOSrepeatInterval(int newSOSrepeatInterval) async {
+  static Future<bool> saveSosRepeatInterval(int newSosRepeatInterval) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool result = await prefs.setInt(sosRepeatInterval, newSOSrepeatInterval);
-    log(await getSOSrepeatInterval().then((value) => value.toString()));
+    bool result = await prefs.setInt(sosRepeatInterval, newSosRepeatInterval);
+    log(await getSosRepeatInterval().then((value) => value.toString()));
     return result;
   }
 
-  static Future<int?> getSOSrepeatInterval() async {
+  static Future<int?> getSosRepeatInterval() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(sosRepeatInterval);
   }

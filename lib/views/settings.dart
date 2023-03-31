@@ -37,7 +37,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Widget _buildSOSdelayTime() {
+  Widget _buildSosDelayTime() {
     return TextFormField(
       decoration: const InputDecoration(labelText: 'SOS delay time (seconds)'),
       keyboardType: TextInputType.number,
@@ -58,7 +58,7 @@ class _SettingsState extends State<Settings> {
           val = SosMethods.sosDelayTime;
         }
         _sosDelayTime = val;
-        await SharedPreferenceHelper.saveSOSdelayTime(_sosDelayTime);
+        await SharedPreferenceHelper.saveSosDelayTime(_sosDelayTime);
       },
     );
   }
@@ -85,7 +85,7 @@ class _SettingsState extends State<Settings> {
           val = SosMethods.sosRepeatInterval;
         }
         _sosRepeatInterval = val;
-        await SharedPreferenceHelper.saveSOSrepeatInterval(_sosRepeatInterval);
+        await SharedPreferenceHelper.saveSosRepeatInterval(_sosRepeatInterval);
       },
     );
   }
@@ -125,8 +125,8 @@ class _SettingsState extends State<Settings> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _buildMessageHead(),
-                _buildSOSdelayTime(),
-                // _buildSOStimeInterval(),
+                _buildSosDelayTime(),
+                // _buildSosTimeInterval(),
                 const SizedBox(height: 100),
                 ElevatedButton(
                   child: const Text(
@@ -138,8 +138,8 @@ class _SettingsState extends State<Settings> {
                     _formKey.currentState!.save();
 
                     SharedPreferenceHelper.saveMessageHead(_messageHead);
-                    SharedPreferenceHelper.saveSOSdelayTime(_sosDelayTime);
-                    SharedPreferenceHelper.saveSOSrepeatInterval(_sosRepeatInterval);
+                    SharedPreferenceHelper.saveSosDelayTime(_sosDelayTime);
+                    SharedPreferenceHelper.saveSosRepeatInterval(_sosRepeatInterval);
                   },
                 ),
                 // RaisedButton(
