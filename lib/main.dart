@@ -1,6 +1,6 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:women_safety_app/services/notification_controller.dart';
 import 'firebase_options.dart';
 import 'services/auth_methods.dart';
 import 'views/home/home.dart';
@@ -8,26 +8,8 @@ import 'views/signin.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await AwesomeNotifications().initialize(
-    // set the icon to null if you want to use the default app icon
-    'resource://drawable/ic_stat_onesignal_default',
-    [
-      NotificationChannel(
-        icon: 'resource://drawable/ic_stat_onesignal_default',
-        channelKey: 'SOS_init',
-        channelName: 'SOS Initializer',
-        channelDescription: 'Notification channel for SOS Triggering',
-        defaultColor: Colors.deepPurple,
-        ledColor: Colors.deepPurple,
-        vibrationPattern: lowVibrationPattern,
-        onlyAlertOnce: true,
-        importance: NotificationImportance.Max,
-      ),
-    ],
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  NotificationController.initializeLocalNotifications();
   runApp(const MyApp());
 }
 

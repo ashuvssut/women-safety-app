@@ -1,37 +1,50 @@
-// import 'dart:developer';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class NotificationController {
-  /// Use this method to detect when a new notification or a schedule is created
-  /// we need to use @pragma("vm:entry-point") in each static method to identify to the Flutter engine that the dart address will be called from native and should be preserved.
-  @pragma("vm:entry-point")
-  static Future<void> onNotificationCreatedMethod(
-      BuildContext context, ReceivedNotification receivedNotification) async {
-    // log('created. finished: ' + receivedNotification.payload.values.toString());
+  static ReceivedAction? initialAction;
+  static Future<void> initializeLocalNotifications() async {
+    await AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      'resource://drawable/ic_stat_onesignal_default',
+      [
+        NotificationChannel(
+          icon: 'resource://drawable/ic_stat_onesignal_default',
+          channelKey: 'SOS_init',
+          channelName: 'SOS Initializer',
+          channelDescription: 'Notification channel for SOS Triggering',
+          defaultColor: Colors.deepPurple,
+          ledColor: Colors.deepPurple,
+          vibrationPattern: lowVibrationPattern,
+          onlyAlertOnce: true,
+          importance: NotificationImportance.Max,
+        ),
+      ],
+      debug: true,
+    );
+
+    // Get initial notification action is optional
+    initialAction =
+        await AwesomeNotifications().getInitialNotificationAction(removeFromActionEvents: false);
   }
 
-  /// Use this method to detect every time that a new notification is displayed
-  @pragma("vm:entry-point")
-  static Future<void> onNotificationDisplayedMethod(
-      BuildContext context, ReceivedNotification receivedNotification) async {
-    // log('displayed: finished: ' + receivedNotification.payload.values.toString());
+  static Future<void> setListeners(BuildContext context) async {
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: onActionReceivedMethod,
+      onNotificationCreatedMethod: onNotificationCreatedMethod,
+      onNotificationDisplayedMethod: onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod: onDismissActionReceivedMethod,
+    );
   }
 
-  /// Use this method to detect if the user dismissed a notification
-  @pragma("vm:entry-point")
-  static Future<void> onDismissActionReceivedMethod(
-      BuildContext context, ReceivedAction receivedAction) async {
-    // log('actions. finished: ' + receivedNotification.payload.values.toString());
-    // log('actions. finished: ' + receivedNotification.buttonKeyPressed.toString());
-    // String dismissedSourceText = AwesomeAssertUtils.toSimpleEnumString(receivedAction.dismissedLifeCycle)
-    // Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
-  }
+  ///  *********************************************
+  ///     NOTIFICATION EVENTS LISTENERS
+  ///  *********************************************
+  ///  we need to use @pragma("vm:entry-point") in each static method to identify to the Flutter engine that the dart address will be called from native and should be preserved.
 
   /// Use this method to detect when the user taps on a notification or action button
   @pragma("vm:entry-point")
-  static Future<void> onActionReceivedMethod(
-      BuildContext context, ReceivedAction receivedAction) async {
+  static Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
     if (receivedAction.buttonKeyPressed == 'START') {
       //PRESSED SEND SOS
       // NotificationMethods.showProgressNotification(1337);
@@ -42,5 +55,27 @@ class NotificationController {
 
     // Navigate into pages, avoiding to open the notification details page over another details page already opened
     // MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/notification-page', (route) => (route.settings.name != '/notification-page') || route.isFirst, arguments: receivedAction);
+  }
+
+  /// Use this method to detect when a new notification or a schedule is created
+  @pragma("vm:entry-point")
+  static Future<void> onNotificationCreatedMethod(ReceivedNotification receivedNotification) async {
+    // log('created. finished: ' + receivedNotification.payload.values.toString());
+  }
+
+  /// Use this method to detect every time that a new notification is displayed
+  @pragma("vm:entry-point")
+  static Future<void> onNotificationDisplayedMethod(
+      ReceivedNotification receivedNotification) async {
+    // log('displayed: finished: ' + receivedNotification.payload.values.toString());
+  }
+
+  /// Use this method to detect if the user dismissed a notification
+  @pragma("vm:entry-point")
+  static Future<void> onDismissActionReceivedMethod(ReceivedAction receivedAction) async {
+    // log('actions. finished: ' + receivedNotification.payload.values.toString());
+    // log('actions. finished: ' + receivedNotification.buttonKeyPressed.toString());
+    // String dismissedSourceText = AwesomeAssertUtils.toSimpleEnumString(receivedAction.dismissedLifeCycle)
+    // Fluttertoast.showToast(msg: 'Notification dismissed on $dismissedSourceText');
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:women_safety_app/services/notification_controller.dart';
 import 'permissions.dart';
 
 class PermissionManager extends StatefulWidget {
@@ -37,7 +38,7 @@ class _PermissionManagerState extends State<PermissionManager> {
     setState(() => hasNotificationsPerms = isAllowed);
     if (isAllowed) {
       log('Notification permission granted');
-      NotificationPerms.setListeners(context);
+      NotificationController.setListeners(context);
     } else {
       Future.delayed(Duration.zero, () => showPermsConsent());
       log('Notification permission denied');
