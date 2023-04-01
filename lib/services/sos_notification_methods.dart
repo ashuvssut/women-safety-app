@@ -3,6 +3,7 @@ import 'dart:math' hide log;
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:women_safety_app/services/database_methods.dart';
 import 'package:women_safety_app/services/shared_preferences.dart';
@@ -49,7 +50,7 @@ class SosNotificationMethods {
           key: 'START',
           label: 'Send SOS',
           autoDismissible: false,
-          actionType: ActionType.KeepOnTop,
+          actionType: ActionType.Default,
           enabled: true,
         ),
       ],
@@ -75,13 +76,14 @@ class SosNotificationMethods {
           key: 'STOP',
           label: 'Cancel SOS',
           autoDismissible: false,
-          actionType: ActionType.KeepOnTop,
+          actionType: ActionType.Default,
           enabled: true,
         )
       ],
     );
   }
 
+  @pragma('vm:entry-point')
   static Future<void> initiateSosProgressNotification(int id) async {
     int? sosDelayTime = await SharedPreferenceHelper.getSosDelayTime();
     if (sosDelayTime != null) {
@@ -98,11 +100,11 @@ class SosNotificationMethods {
         () async {
           log('simulatedStep is $simulatedStep');
           if (simulatedStep == maxStep + 1) {
-            cancelProgressNotification();
+            cancelProgressNotification(null);
             await createSendSosNotification(id);
             SosMethods.sendSos();
           } else if (simulatedStep > maxStep + 1) {
-            cancelProgressNotification();
+            cancelProgressNotification(null);
             await createSendSosNotification(id);
           } else {
             createSendingSosProgressNotification(id);
@@ -112,8 +114,9 @@ class SosNotificationMethods {
     }
   }
 
-  static void cancelProgressNotification() {
+  static void cancelProgressNotification(int? id) {
     simulatedStep = maxStep + 2; // hits loop break condition in showProgressNotification() method
+    if (id != null) AwesomeNotifications().cancel(id);
   }
 
   static Future<void> removeNotification() async {
@@ -121,16 +124,18 @@ class SosNotificationMethods {
     simulatedStep = 1;
   }
 
+  @pragma('vm:entry-point')
   static onSosNotificationActionReceived(ReceivedAction receivedAction) {
     if (receivedAction.buttonKeyPressed == 'START') {
       //PRESSED SEND SOS
+      log('SOS is initiating');
       Fluttertoast.showToast(
         msg: 'SOS is initiating. You can cancel it from notification bar',
       );
       initiateSosProgressNotification(1337);
     } else if (receivedAction.buttonKeyPressed == 'STOP') {
       //PRESSED CANCEL
-      cancelProgressNotification();
+      cancelProgressNotification(null);
     }
   }
 

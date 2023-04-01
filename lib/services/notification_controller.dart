@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:women_safety_app/services/sos_notification_methods.dart';
 
 class NotificationController {
@@ -31,7 +32,7 @@ class NotificationController {
   @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
     if (receivedAction.channelKey == SosNotificationMethods.channelKey) {
-      SosNotificationMethods.onSosNotificationActionReceived(receivedAction);
+      FlutterIsolate.spawn(SosNotificationMethods.onSosNotificationActionReceived, receivedAction);
     }
 
     // Navigate into pages, avoiding to open the notification details page over another details page already opened
