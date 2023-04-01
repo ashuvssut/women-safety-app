@@ -69,27 +69,15 @@ class SosMethods {
     }
   }
 
-  static Future<bool> getLocationPermission() async {
-    bool serviceEnabled;
+  static Future<bool> checkLocationPermission() async {
     LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Fluttertoast.showToast(msg: 'Please enable Your Location Service');
     }
 
     permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        Fluttertoast.showToast(msg: 'Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      Fluttertoast.showToast(
-          msg: 'Location permissions are permanently denied, App cannot request permissions.');
-    }
 
     if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
       return false;
@@ -100,12 +88,10 @@ class SosMethods {
 
   static Future<PositionDetails?> _determinePosition() async {
     // check if location service is enabled using getLocationPermission()
-    bool locationPermission = await getLocationPermission();
+    await PermissionMethods.initiatePermissionManger();
+    bool locationPermission = await checkLocationPermission();
     if (!locationPermission) {
-      // TODO: graciously handle this
-      Fluttertoast.showToast(
-          msg:
-              'Location Service is not enabled. SOS Failed. Please enable Location Service in your phone settings.');
+      Fluttertoast.showToast(msg: 'No Location data. SOS Failed.');
       return null;
     }
 

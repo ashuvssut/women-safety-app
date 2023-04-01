@@ -93,19 +93,19 @@ class _PermissionManagerState extends State<PermissionManager> {
   }
 
   Future<void> getPermission() async {
-    if (!hasContactsPerms) {
+    if (!hasContactsPerms && mounted) {
       await ContactsPerms.request() //
           .then((status) => contactsPermsHandler(status));
     }
-    if (!hasNotificationsPerms) {
+    if (!hasNotificationsPerms && mounted) {
       await NotificationPerms.request() //
           .then((isAllowed) => notificationPermsHandler(isAllowed));
     }
-    if (!hasLocPerms) {
+    if (!hasLocPerms && mounted) {
       await GeolocationPerms.request() //
           .then((status) => locationPermsHandler(status));
     }
-    if (!hasSmsPerms) {
+    if (!hasSmsPerms && mounted) {
       await SMSPerms.request() //
           .then((status) => smsPermsHandler(status));
     }

@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,10 @@ class GeolocationPerms {
         return const GeoLocManualPermsGrantPopup();
       },
     );
+  }
+
+  static Future<bool> isLocationServiceEnabled() async {
+    return await Geolocator.isLocationServiceEnabled();
   }
 
   // You can can also directly ask the permission about its status.
