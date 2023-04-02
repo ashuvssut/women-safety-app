@@ -17,7 +17,7 @@ class PermissionMethods {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return const PermissionManager();
+        return const PermissionManager(isCalledAsPopup: true);
       },
     );
   }
