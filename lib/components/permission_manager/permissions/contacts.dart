@@ -2,8 +2,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
 class ContactsPerms {
-  static String permanentDeniedFeedback =
-      'Enable SMS permissions from device settings else you will be unable to add trusted contacts.';
+  static String permanentDeniedFeedback = 'No Contact permissions. Unable to add trusted contacts.';
 
   static Future<PermissionStatus> check() async {
     return await Permission.contacts.status;

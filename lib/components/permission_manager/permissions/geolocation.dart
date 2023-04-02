@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class GeolocationPerms {
   static String permanentDeniedFeedback =
-      'Enable SMS location permission from device settings else App will be unable to add you cuurent location info in your SOS SMS';
+      'No location permission. Unable to add location info in your SOS message';
 
   static Future<PermissionStatus> check() async {
     return await Permission.location.status;

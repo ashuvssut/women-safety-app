@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class SMSPerms {
   static String permanentDeniedFeedback =
-      'Enable SMS permissions from device settings else App will be unable to send SOS SMS to your added trusted contacts';
+      'No SMS permissions. Unable to send SOS SMS to your trusted contacts';
 
   static Future<PermissionStatus> check() async {
     return await Permission.sms.status;
