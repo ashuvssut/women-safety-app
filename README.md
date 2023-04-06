@@ -3,14 +3,12 @@
 An App that can **send current location of the user** to her *trusted list* of contacts when in danger with just one tap **via SMS**.
 This project was a created on Google DSC WoW Hackathon'21
 
-### Checkout the alpha release and report issues you find!
+### Checkout the app release and report issues you find!
 
 An app dedicated towards woman safety. Keeping in view about the increasing cases of threats on women.
 Currently this app is compatible with Android only.
 
 ### Find it on
-Play Store has the **old** v0.1.3 working version of this app. You can optionally download the [latest 1.0.0 version](https://github.com/ashuvssut/women-safety-app/releases/tag/1.0.0-rc.1) and try it out (It is not published on Play Store yet)
-
 <a href="https://play.google.com/store/apps/details?id=com.ashuvssut.women_safety_app">
 <img alt="Get it on Google Play" height="80" src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0" />
 </a>
@@ -56,7 +54,7 @@ I gave flutter a try for the first time and it was a great experience. I learned
 
 ## Development Plans
 
-- Current Release v1.0.0 is all ready to use (SOS featue works fine). It has a new polished UI and added major improvements in User Experience.
+- Current Release v1.1.0 is all ready to use (SOS featue works fine). It has a new polished UI and added major improvements in User Experience.
 
 - Release v2.0.0 will bring on improvements and add Articles screen and Video Library screens (to be implemented). (see Projects tab) 
 
