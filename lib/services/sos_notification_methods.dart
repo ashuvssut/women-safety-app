@@ -49,7 +49,7 @@ class SosNotificationMethods {
           key: 'START',
           label: 'Send SOS',
           autoDismissible: false,
-          actionType: ActionType.KeepOnTop,
+          actionType: ActionType.Default,
           enabled: true,
         ),
       ],
@@ -75,7 +75,7 @@ class SosNotificationMethods {
           key: 'STOP',
           label: 'Cancel SOS',
           autoDismissible: false,
-          actionType: ActionType.KeepOnTop,
+          actionType: ActionType.Default,
           enabled: true,
         )
       ],

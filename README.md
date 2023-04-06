@@ -9,6 +9,8 @@ An app dedicated towards woman safety. Keeping in view about the increasing case
 Currently this app is compatible with Android only.
 
 ### Find it on
+Play Store has the **old** v0.1.3 working version of this app. You can optionally download the [latest 1.0.0 version](https://github.com/ashuvssut/women-safety-app/releases/tag/1.0.0-rc.1) and try it out (It is not published on Play Store yet)
+
 <a href="https://play.google.com/store/apps/details?id=com.ashuvssut.women_safety_app">
 <img alt="Get it on Google Play" height="80" src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0" />
 </a>

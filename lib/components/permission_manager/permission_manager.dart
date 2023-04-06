@@ -6,7 +6,8 @@ import 'package:women_safety_app/services/notification_controller.dart';
 import 'permissions.dart';
 
 class PermissionManager extends StatefulWidget {
-  const PermissionManager({super.key});
+  const PermissionManager({super.key, this.isCalledAsPopup = false});
+  final bool isCalledAsPopup;
 
   @override
   State<PermissionManager> createState() => _PermissionManagerState();
@@ -93,19 +94,19 @@ class _PermissionManagerState extends State<PermissionManager> {
   }
 
   Future<void> getPermission() async {
-    if (!hasContactsPerms) {
+    if (!hasContactsPerms && mounted) {
       await ContactsPerms.request() //
           .then((status) => contactsPermsHandler(status));
     }
-    if (!hasNotificationsPerms) {
+    if (!hasNotificationsPerms && mounted) {
       await NotificationPerms.request() //
           .then((isAllowed) => notificationPermsHandler(isAllowed));
     }
-    if (!hasLocPerms) {
+    if (!hasLocPerms && mounted) {
       await GeolocationPerms.request() //
           .then((status) => locationPermsHandler(status));
     }
-    if (!hasSmsPerms) {
+    if (!hasSmsPerms && mounted) {
       await SMSPerms.request() //
           .then((status) => smsPermsHandler(status));
     }
@@ -127,6 +128,7 @@ class _PermissionManagerState extends State<PermissionManager> {
     GeolocationPerms.check().then((status) {
       locationPermsHandler(status);
     });
+    if (widget.isCalledAsPopup) Navigator.pop(context);
   }
 
   @override

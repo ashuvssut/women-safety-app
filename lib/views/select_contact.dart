@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:women_safety_app/components/permission_manager/permission_manager.dart';
 import 'package:women_safety_app/components/permission_manager/permissions.dart';
 import 'package:women_safety_app/services/contacts.dart';
 import 'package:women_safety_app/services/database_methods.dart';
@@ -24,18 +25,13 @@ class _SelectContactState extends State<SelectContact> {
   @override
   void initState() {
     super.initState();
-    getContactsPermissions();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      initContactList();
+    });
   }
 
-  getContactsPermissions() async {
+  initContactList() async {
     try {
-      if (!await ContactsPerms.check().isGranted) {
-        final isGranted = await ContactsPerms.request().isGranted;
-        if (!isGranted) {
-          Fluttertoast.showToast(msg: "Please grant contacts permission to continue");
-          return;
-        }
-      }
       if (await ContactsPerms.check().isGranted) {
         getAllContacts();
         searchController.addListener(() {
@@ -201,7 +197,8 @@ class _SelectContactState extends State<SelectContact> {
                       isSearching ? 'No search results to show' : 'No contacts found yet',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                  )
+                  ),
+            PermissionManager(key: UniqueKey()),
           ],
         ),
       ),
