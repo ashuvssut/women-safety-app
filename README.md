@@ -20,6 +20,9 @@ I gave flutter a try for the first time and it was a great experience. I learned
 (PS- I am a React Native developer to the core. I was just curious to try flutter.)
 </details>
 
+### Flowchart - App working
+[Here's the Flowchart](https://bit.ly/wsaFlowchart) made in Excalidaw to show how this app works!
+
 ### Screenshots
 
 #### Sign in screen
